@@ -1,0 +1,12 @@
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/movieListFragment">
+
+
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="eu.javimar.mymoviesac.ui.MovieListFragment"
+        android:label="movieListFragment" />
+</navigation>

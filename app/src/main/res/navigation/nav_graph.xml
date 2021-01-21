@@ -1,6 +1,6 @@
-
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/movieListFragment">
 
@@ -8,5 +8,16 @@
     <fragment
         android:id="@+id/movieListFragment"
         android:name="eu.javimar.mymoviesac.ui.MovieListFragment"
-        android:label="movieListFragment" />
+        android:label="movie_list_fragment"
+        tools:layout="@layout/fragment_movie_listing" >
+        <action
+            android:id="@+id/action_movieListFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="eu.javimar.mymoviesac.ui.MovieDetailFragment"
+        android:label="movie_detail_fragment" />
+
 </navigation>

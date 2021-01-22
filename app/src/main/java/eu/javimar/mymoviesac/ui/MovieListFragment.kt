@@ -18,6 +18,8 @@ class MovieListFragment: Fragment()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View
     {
+        setHasOptionsMenu(true)
+
         val binding = FragmentMovieListingBinding.inflate(inflater)
 
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
@@ -31,21 +33,19 @@ class MovieListFragment: Fragment()
             viewModel.displayMovieDetails(it)
         })
 
-/*
+
         // Observe the navigateToSelectedMovie LiveData and Navigate when it isn't null
         // After navigating, call displayMovieDetailsComplete() so that the ViewModel is ready
         // for another navigation event.
         viewModel.navigateToSelectedMovie.observe(viewLifecycleOwner, Observer { movie ->
             movie?.let {
-                // Must find the NavController from the Fragment
-                this.findNavController().navigate(MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment))
+                // Find the NavController from the Fragment
+                this.findNavController().navigate(MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(it))
                 // Signal navigation ended
                 viewModel.displayMovieDetailsComplete()
             }
         })
-*/
 
-        setHasOptionsMenu(true)
         return binding.root
     }
 

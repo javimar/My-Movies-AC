@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import eu.javimar.mymoviesac.databinding.MoviesListItemBinding
-import eu.javimar.mymoviesac.model.Movie
+import eu.javimar.mymoviesac.network.Movie
 
 class MovieAdapter (val onClickListener: OnClickListener ) :
 ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DiffCallback)

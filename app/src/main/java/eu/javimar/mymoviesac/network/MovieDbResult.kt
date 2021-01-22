@@ -1,4 +1,4 @@
-package eu.javimar.mymoviesac.model
+package eu.javimar.mymoviesac.network
 
 import android.os.Parcelable
 import com.squareup.moshi.Json

@@ -1,13 +1,12 @@
 package eu.javimar.mymoviesac.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import eu.javimar.mymoviesac.model.Movie
-import eu.javimar.mymoviesac.model.MovieDbResult
-import eu.javimar.mymoviesac.model.MoviesApi
+import eu.javimar.mymoviesac.network.Movie
+import eu.javimar.mymoviesac.network.MovieDbResult
+import eu.javimar.mymoviesac.network.MoviesApi
 import kotlinx.coroutines.launch
 
 enum class MovieApiStatus { LOADING, ERROR, DONE }
@@ -17,18 +16,16 @@ enum class MovieApiStatus { LOADING, ERROR, DONE }
  */
 class MovieListingViewModel: ViewModel()
 {
-
     // The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<MovieApiStatus>()
     // The external immutable LiveData for the request status
     val status: LiveData<MovieApiStatus>
         get() = _status
 
-    // Internally, we use a MutableLiveData, because we will be updating the List of MarsProperty
-    // with new values
+    // Internally, we use a MutableLiveData, because we will be updating the list with new values
     private val _movieResults = MutableLiveData<MovieDbResult>()
     // The external LiveData interface to the property is immutable, so only this class can modify
-    val movies: LiveData<MovieDbResult>
+    val movieResults: LiveData<MovieDbResult>
         get() = _movieResults
 
     // Internally, we use a MutableLiveData to handle navigation to the selected property
@@ -61,10 +58,7 @@ class MovieListingViewModel: ViewModel()
                 _movieResults.value = null
             }
         }
-
-        Log.e("JAVIER", "RESULTS= " + (_movieResults.value?.totalResults ?: 0))
     }
-
 
 
     /**

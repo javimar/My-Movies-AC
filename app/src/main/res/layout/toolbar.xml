@@ -1,15 +1,12 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-
-    </data>
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:titleTextAppearance="@style/Base.TextAppearance.AppCompat.Large"
         app:layout_collapseMode="pin">
 
     </androidx.appcompat.widget.Toolbar>

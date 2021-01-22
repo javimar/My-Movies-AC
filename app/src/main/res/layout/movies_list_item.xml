@@ -7,7 +7,7 @@
     <data>
         <variable
             name="movie"
-            type="eu.javimar.mymoviesac.model.Movie" />
+            type="eu.javimar.mymoviesac.network.Movie" />
 
     </data>
 
@@ -41,7 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:textColor="@color/white"
                 android:background="@color/teal_700"
+                android:text="@{movie.title}"
                 android:padding="8dp"
                 android:lines="2"
                 android:minLines="2"

@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="eu.javimar.mymoviesac.ui.MovieDetailViewModel" />
+            type="eu.javimar.mymoviesac.ui.detail.MovieDetailViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -62,6 +62,7 @@
                         android:id="@+id/placePoster"
                         android:layout_width="110dp"
                         android:layout_height="160dp"
+                        app:imageUrl="@{viewModel.selectedMovie.posterPath}"
                         android:layout_marginTop="16dp" />
 
                     <TextView

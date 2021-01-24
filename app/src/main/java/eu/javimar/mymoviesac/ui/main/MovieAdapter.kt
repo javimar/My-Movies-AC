@@ -1,4 +1,4 @@
-package eu.javimar.mymoviesac.ui
+package eu.javimar.mymoviesac.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import eu.javimar.mymoviesac.databinding.MoviesListItemBinding
-import eu.javimar.mymoviesac.network.Movie
+import eu.javimar.mymoviesac.model.server.Movie
 
-class MovieAdapter (val onClickListener: OnClickListener ) :
+class MovieAdapter (val onClickListener: OnClickListener) :
 ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DiffCallback)
 {
     /**

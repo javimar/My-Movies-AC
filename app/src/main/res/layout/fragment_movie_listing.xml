@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="eu.javimar.mymoviesac.ui.MovieListingViewModel" />
+            type="eu.javimar.mymoviesac.ui.main.MovieListingViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

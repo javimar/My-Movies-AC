@@ -1,4 +1,4 @@
-package eu.javimar.mymoviesac.ui
+package eu.javimar.mymoviesac.ui.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,13 +16,12 @@ class MovieDetailFragment: Fragment()
                               savedInstanceState: Bundle?): View
     {
         val binding = FragmentMovieDetailBinding.inflate(inflater)
-        val application = requireNotNull(activity).application
 
         binding.lifecycleOwner = this
 
-        val movie = MovieDetailFragmentArgs.fromBundle(requireArguments()).selectedMovie
+        val movie = MovieDetailFragmentArgs.fromBundle(requireArguments()).movie
 
-        val viewModelFactory = MovieDetailViewModelFactory(movie, application)
+        val viewModelFactory = MovieDetailViewModelFactory(movie)
         binding.viewModel = ViewModelProvider(this, viewModelFactory).get(MovieDetailViewModel::class.java)
 
         (requireActivity() as AppCompatActivity).supportActionBar?.title = movie.title

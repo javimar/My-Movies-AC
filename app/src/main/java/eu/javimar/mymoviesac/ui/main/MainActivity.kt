@@ -1,9 +1,10 @@
-package eu.javimar.mymoviesac
+package eu.javimar.mymoviesac.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import eu.javimar.mymoviesac.R
 import eu.javimar.mymoviesac.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity()

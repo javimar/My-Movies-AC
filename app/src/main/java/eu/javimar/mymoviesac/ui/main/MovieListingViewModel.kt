@@ -1,20 +1,14 @@
-package eu.javimar.mymoviesac.ui
+package eu.javimar.mymoviesac.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import eu.javimar.mymoviesac.network.Movie
-import eu.javimar.mymoviesac.network.MovieDbResult
-import eu.javimar.mymoviesac.network.MoviesApi
+import androidx.lifecycle.*
+import eu.javimar.mymoviesac.model.server.Movie
+import eu.javimar.mymoviesac.model.server.MovieDbResult
+import eu.javimar.mymoviesac.model.server.MoviesRepository
 import kotlinx.coroutines.launch
 
 enum class MovieApiStatus { LOADING, ERROR, DONE }
 
-/**
- * The [ViewModel] that is attached to the [MovieListFragment]
- */
-class MovieListingViewModel: ViewModel()
+class MovieListingViewModel(private val moviesRepository: MoviesRepository) : ViewModel()
 {
     // The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<MovieApiStatus>()
@@ -48,12 +42,13 @@ class MovieListingViewModel: ViewModel()
     {
         viewModelScope.launch {
             _status.value = MovieApiStatus.LOADING
-            try {
-                // TODO pasar API KEY al VM y la region
-                _movieResults.value = MoviesApi.retrofitService.listPopularMoviesAsync(
-                    "109c1631c7cc9e31de7e45027ec96985", "US")
+            try
+            {
+                _movieResults.value = moviesRepository.findPopularMovies()
                 _status.value = MovieApiStatus.DONE
-            } catch (e: Exception) {
+            }
+            catch (e: Exception)
+            {
                 _status.value = MovieApiStatus.ERROR
                 _movieResults.value = null
             }
@@ -75,7 +70,16 @@ class MovieListingViewModel: ViewModel()
     fun displayMovieDetailsComplete() {
         _navigateToSelectedMovie.value = null
     }
+}
 
-
-
+class MovieListingViewModelFactory (private val repository: MoviesRepository) : ViewModelProvider.Factory
+{
+    @Suppress("unchecked_cast")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MovieListingViewModel::class.java))
+        {
+            return MovieListingViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

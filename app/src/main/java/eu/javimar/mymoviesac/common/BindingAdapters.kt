@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import eu.javimar.mymoviesac.R
-import eu.javimar.mymoviesac.network.MovieDbResult
+import eu.javimar.mymoviesac.model.server.MovieDbResult
+import eu.javimar.mymoviesac.ui.main.MovieAdapter
+import eu.javimar.mymoviesac.ui.main.MovieApiStatus
 
 
 /**

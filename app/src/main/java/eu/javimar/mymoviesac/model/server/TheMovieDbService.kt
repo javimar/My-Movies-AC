@@ -1,4 +1,4 @@
-package eu.javimar.mymoviesac.network
+package eu.javimar.mymoviesac.model.server
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

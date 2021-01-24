@@ -7,7 +7,7 @@
     <data>
         <variable
             name="movie"
-            type="eu.javimar.mymoviesac.network.Movie" />
+            type="eu.javimar.mymoviesac.model.server.Movie" />
 
     </data>
 

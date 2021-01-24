@@ -1,4 +1,4 @@
-package eu.javimar.mymoviesac.ui
+package eu.javimar.mymoviesac.ui.main
 
 import android.os.Bundle
 import android.view.*
@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import eu.javimar.mymoviesac.R
 import eu.javimar.mymoviesac.databinding.FragmentMovieListingBinding
+import eu.javimar.mymoviesac.model.server.MoviesRepository
+
 
 class MovieListFragment: Fragment()
 {
-    private val viewModel: MovieListingViewModel by lazy {
-        ViewModelProvider(this).get(MovieListingViewModel::class.java)
-    }
+    private lateinit var viewModel: MovieListingViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View
@@ -21,13 +21,15 @@ class MovieListFragment: Fragment()
         setHasOptionsMenu(true)
 
         val binding = FragmentMovieListingBinding.inflate(inflater)
+        val application = requireNotNull(activity).application
+
+        val viewModelFactory = MovieListingViewModelFactory(MoviesRepository(application))
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MovieListingViewModel::class.java)
 
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
-        // Giving the binding access to the OverviewViewModel
         binding.viewModel = viewModel
-
 
         binding.recyclerViewMovies.adapter = MovieAdapter(MovieAdapter.OnClickListener {
             viewModel.displayMovieDetails(it)
@@ -37,10 +39,11 @@ class MovieListFragment: Fragment()
         // Observe the navigateToSelectedMovie LiveData and Navigate when it isn't null
         // After navigating, call displayMovieDetailsComplete() so that the ViewModel is ready
         // for another navigation event.
-        viewModel.navigateToSelectedMovie.observe(viewLifecycleOwner, Observer { movie ->
+        viewModel.navigateToSelectedMovie.observe(viewLifecycleOwner, { movie ->
             movie?.let {
                 // Find the NavController from the Fragment
-                this.findNavController().navigate(MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(it))
+                this.findNavController().navigate(MovieListFragmentDirections
+                    .actionMovieListFragmentToMovieDetailFragment(it))
                 // Signal navigation ended
                 viewModel.displayMovieDetailsComplete()
             }
@@ -48,7 +51,6 @@ class MovieListFragment: Fragment()
 
         return binding.root
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)

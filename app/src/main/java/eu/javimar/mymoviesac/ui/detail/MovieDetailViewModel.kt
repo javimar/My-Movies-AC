@@ -1,12 +1,11 @@
-package eu.javimar.mymoviesac.ui
+package eu.javimar.mymoviesac.ui.detail
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import eu.javimar.mymoviesac.network.Movie
+import androidx.lifecycle.ViewModel
+import eu.javimar.mymoviesac.model.server.Movie
 
-class MovieDetailViewModel(movie: Movie, app: Application) : AndroidViewModel(app)
+class MovieDetailViewModel(movie: Movie) : ViewModel()
 {
     private val _selectedMovie = MutableLiveData<Movie>()
 

@@ -6,71 +6,74 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import eu.javimar.mymoviesac.databinding.MoviesListItemBinding
-import eu.javimar.mymoviesac.model.server.Movie
+import eu.javimar.mymoviesac.model.database.Movie
 
-class MovieAdapter (val onClickListener: OnClickListener) :
-ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DiffCallback)
+class MovieAdapter (private val movieClickListener: MovieClickListener) :
+        ListAdapter<Movie, MovieAdapter.MovieViewHolder>(MovieDiffCallback())
 {
+    /**
+     * Create new [RecyclerView] item views
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder
+    {
+        return MovieViewHolder.from(parent)
+    }
+
+
+    /**
+     * Replaces the contents of a view
+     */
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int)
+    {
+        holder.bind(getItem(position), movieClickListener)
+    }
+
+
     /**
      * The MovieViewHolder constructor takes the binding variable from the associated
      * GridViewItem, which nicely gives it access to the full [Movie] information.
      */
-    class MovieViewHolder(private var binding: MoviesListItemBinding): RecyclerView.ViewHolder(binding.root)
+    class MovieViewHolder private constructor(private val binding: MoviesListItemBinding):
+        RecyclerView.ViewHolder(binding.root)
     {
-        fun bind(movie: Movie)
+        fun bind(movie: Movie, movieClickListener: MovieClickListener)
         {
             binding.movie = movie
-            //binding.movieTitle.text = movie.title
-           // binding.moviePosterView.loadUrl("https://image.tmdb.org/t/p/w185/${movie.posterPath}")
-
+            binding.clickListener = movieClickListener
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
         }
+
+        companion object
+        {
+            fun from(parent: ViewGroup): MovieViewHolder
+            {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = MoviesListItemBinding.inflate(layoutInflater, parent, false)
+                return MovieViewHolder(binding)
+            }
+        }
     }
 
-    /**
-     * Allows the RecyclerView to determine which items have changed when the [List] of [Movie]
-     * has been updated.
-     */
-    companion object DiffCallback : DiffUtil.ItemCallback<Movie>()
+
+    class MovieDiffCallback : DiffUtil.ItemCallback<Movie>()
     {
-        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem === newItem
-        }
-        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean
+        {
             return oldItem.id == newItem.id
         }
-    }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder
-    {
-        return MovieViewHolder(MoviesListItemBinding.inflate(LayoutInflater.from(parent.context)))
-    }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int)
-    {
-        val movie = getItem(position)
-        holder.itemView.setOnClickListener {
-            onClickListener.onClick(movie)
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean
+        {
+            return oldItem == newItem
         }
-        holder.bind(movie)
     }
 
 
-    /**
-     * Custom listener that handles clicks on [RecyclerView] items.  Passes the [Movie]
-     * associated with the current item to the [onClick] function.
-     * @param clickListener lambda that will be called with the current [Movie]
-     */
-    class OnClickListener(val clickListener: (movie: Movie) -> Unit)
+    // Custom listener that handles clicks on RecyclerView items
+    class MovieClickListener(val clickListener: (id: Int) -> Unit)
     {
-        fun onClick(movie: Movie) = clickListener(movie)
+        fun onClick(movie: Movie) = clickListener(movie.id)
     }
 }

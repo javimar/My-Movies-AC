@@ -15,6 +15,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
@@ -32,9 +33,15 @@
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    app:imageUrl="@{viewModel.selectedMovie.posterPath}"
+                    app:imageUrl="@{viewModel.selectedMovie.backdropPath}"
                     tools:src="@mipmap/ic_launcher"
                     tools:ignore="ContentDescription" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/movieDetailToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:title="@{viewModel.title}" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -77,7 +84,7 @@
                         android:layout_toEndOf="@id/placePoster"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:text="@{viewModel.selectedMovie.title}"
+                        android:text="@{viewModel.title}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         tools:text="Casablanca" />
 
@@ -112,7 +119,7 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                             android:textColor="?attr/colorPrimary"
-                            app:ratingToString="@{viewModel.selectedMovie.voteAverage}"
+                            android:text="@{String.valueOf(viewModel.selectedMovie.voteAverage)}"
                             tools:text="6.9" />
 
                         <TextView
@@ -140,6 +147,18 @@
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/movieDetailFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_favorite_off"
+            app:favorite="@{viewModel.selectedMovie.favorite}"
+            android:onClick="@{() -> viewModel.onFavoriteClicked()}"
+            app:layout_anchor="@id/appBarLayout"
+            app:layout_anchorGravity="bottom|end"
+            tools:ignore="ContentDescription" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

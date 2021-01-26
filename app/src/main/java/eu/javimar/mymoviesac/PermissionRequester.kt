@@ -20,7 +20,6 @@ class PermissionRequester(private val activity: Activity, private val permission
                 override fun onPermissionDenied(response: PermissionDeniedResponse?) {
                     continuation(false)
                 }
-            }
-            ).check()
+            }).check()
     }
 }

@@ -3,33 +3,18 @@ package eu.javimar.mymoviesac.ui
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import eu.javimar.mymoviesac.R
+import eu.javimar.mymoviesac.model.database.Movie
 import eu.javimar.mymoviesac.model.server.MovieDbResult
 import eu.javimar.mymoviesac.ui.main.MovieAdapter
 import eu.javimar.mymoviesac.ui.main.MovieApiStatus
 
-
-/**
- * When there is no data (data is null), hide the [RecyclerView], otherwise show it.
- */
-@BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: MovieDbResult?)
-{
-    val adapter = recyclerView.adapter as MovieAdapter
-    if (data != null) {
-        adapter.submitList(data.results)
-    }
-}
-
-@BindingAdapter("ratingToString")
-fun convertRatingToString(textView: TextView, rating: Double)
-{
-    textView.setText(rating.toString())
-}
 
 /**
  * Uses the Glide library to load an image by URL into an [ImageView]
@@ -39,7 +24,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?)
 {
     imgUrl?.let {
         Glide.with(imgView.context)
-            .load("https://image.tmdb.org/t/p/w185/${it}")
+            .load(it)
             .apply(
                 RequestOptions()
                 .placeholder(R.drawable.loading_animation)
@@ -70,4 +55,10 @@ fun bindStatus(statusImageView: ImageView, status: MovieApiStatus?)
             statusImageView.visibility = View.GONE
         }
     }
+}
+
+@BindingAdapter("favorite")
+fun FloatingActionButton.setFavorite(favorite: Boolean?) {
+    val icon = if (favorite == true) R.drawable.ic_favorite_on else R.drawable.ic_favorite_off
+    setImageDrawable(ContextCompat.getDrawable(context, icon))
 }

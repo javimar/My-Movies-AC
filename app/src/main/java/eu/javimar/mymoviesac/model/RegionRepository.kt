@@ -4,6 +4,7 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.app.Application
 import android.location.Geocoder
 import android.location.Location
+import android.util.Log
 
 
 class RegionRepository(application: Application)

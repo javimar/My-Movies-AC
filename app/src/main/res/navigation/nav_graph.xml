@@ -4,7 +4,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/movieListFragment">
 
-
     <fragment
         android:id="@+id/movieListFragment"
         android:name="eu.javimar.mymoviesac.ui.main.MovieListFragment"
@@ -12,17 +11,23 @@
         tools:layout="@layout/fragment_movie_listing">
         <action
             android:id="@+id/action_movieListFragment_to_movieDetailFragment"
-            app:destination="@id/movieDetailFragment" />
+            app:destination="@id/movieDetailFragment"
+            app:enterAnim="@anim/translate_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/translate_out" />
     </fragment>
 
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="eu.javimar.mymoviesac.ui.detail.MovieDetailFragment"
-        android:label="">
+        android:label=""
+        tools:layout="@layout/fragment_movie_detail">
 
         <argument
-            android:name="movie"
-            app:argType="eu.javimar.mymoviesac.model.server.Movie" />
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
 </navigation>

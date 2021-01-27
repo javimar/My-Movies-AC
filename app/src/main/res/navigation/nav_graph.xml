@@ -7,7 +7,6 @@
     <fragment
         android:id="@+id/movieListFragment"
         android:name="eu.javimar.mymoviesac.ui.main.MovieListFragment"
-        android:label="Popular Movies"
         tools:layout="@layout/fragment_movie_listing">
         <action
             android:id="@+id/action_movieListFragment_to_movieDetailFragment"
@@ -21,7 +20,6 @@
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="eu.javimar.mymoviesac.ui.detail.MovieDetailFragment"
-        android:label=""
         tools:layout="@layout/fragment_movie_detail">
 
         <argument

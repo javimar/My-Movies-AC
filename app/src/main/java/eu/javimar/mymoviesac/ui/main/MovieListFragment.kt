@@ -6,6 +6,7 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import eu.javimar.mymoviesac.PermissionRequester
 import eu.javimar.mymoviesac.R
 import eu.javimar.mymoviesac.common.app
@@ -28,8 +29,6 @@ class MovieListFragment: Fragment()
     {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_movie_listing, container,false)
-
-        setHasOptionsMenu(true)
 
         viewModel = getViewModel { MovieListingViewModel(MoviesRepository(app)) }
 
@@ -54,6 +53,29 @@ class MovieListFragment: Fragment()
         return binding.root
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        val navController = findNavController()
+        binding.mainBar.toolbar.setTitle(R.string.app_name)
+        binding.mainBar.toolbar.setupWithNavController(navController)
+        binding.mainBar.toolbar.inflateMenu(R.menu.menu_main)
+        binding.mainBar.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_popular -> {
+                    // TODO add functionality to handle menu request popular and new movies
+                    // Navigate to most populat
+                    true
+                }
+                R.id.action_new -> {
+                    // Navigate to new movies
+                    true
+                }
+                else -> true
+            }
+        }
+    }
+
     private fun subscribeUi(adapter: MovieAdapter)
     {
         viewModel.navigateToSelectedMovie.observe(viewLifecycleOwner, { id ->
@@ -74,18 +96,4 @@ class MovieListFragment: Fragment()
             }
         })
     }
-
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
-    {
-        inflater.inflate(R.menu.menu_main, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean
-    {
-
-        return true
-    }
-
 }

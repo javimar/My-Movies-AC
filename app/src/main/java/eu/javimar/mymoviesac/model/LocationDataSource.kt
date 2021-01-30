@@ -4,9 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.location.Location
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
-
+import kotlin.coroutines.resume
 
 interface LocationDataSource
 {
@@ -25,9 +24,4 @@ class PlayServicesLocationDataSource(application: Application) : LocationDataSou
                     continuation.resume(it.result)
                 }
         }
-
-
-    private fun <T> CancellableContinuation<T>.resume(value: T) {
-    }
-
 }

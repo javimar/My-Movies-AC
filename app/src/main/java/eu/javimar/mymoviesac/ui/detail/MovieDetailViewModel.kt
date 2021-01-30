@@ -1,6 +1,5 @@
 package eu.javimar.mymoviesac.ui.detail
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,12 +18,6 @@ class MovieDetailViewModel(private val movieId: Int,
     private val _favorite = MutableLiveData<Boolean>()
     val favorite: LiveData<Boolean>
         get() = _favorite
-
-
-
-    private val _title = MutableLiveData<String>()
-    val title: LiveData<String>
-        get() = _title
 
     // Initialize the _selectedMovie MutableLiveData
     init {
@@ -49,7 +42,6 @@ class MovieDetailViewModel(private val movieId: Int,
     private fun updateUi()
     {
         selectedMovie.value?.run {
-            _title.value = title
             _favorite.value = favorite
         }
     }

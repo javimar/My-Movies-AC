@@ -36,7 +36,7 @@ class MovieDetailFragment: Fragment()
         viewModel = getViewModel { MovieDetailViewModel(args.id, MoviesRepository(app)) }
 
         binding.apply {
-            viewModel = viewModel
+            viewmodel = viewModel
             lifecycleOwner = this@MovieDetailFragment
         }
     }

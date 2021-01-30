@@ -1,13 +1,13 @@
 package eu.javimar.mymoviesac.ui.main
 
 import androidx.lifecycle.*
-import eu.javimar.mymoviesac.model.database.Movie
-import eu.javimar.mymoviesac.model.server.MoviesRepository
+import eu.javimar.domain.Movie
+import eu.javimar.usecases.GetPopularMovies
 import kotlinx.coroutines.launch
 
 enum class MovieApiStatus { LOADING, ERROR, DONE }
 
-class MovieListingViewModel(private val moviesRepository: MoviesRepository) : ViewModel()
+class MovieListingViewModel(private val getPopularMovies: GetPopularMovies) : ViewModel()
 {
     // The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<MovieApiStatus>()
@@ -40,7 +40,7 @@ class MovieListingViewModel(private val moviesRepository: MoviesRepository) : Vi
             _status.value = MovieApiStatus.LOADING
             try
             {
-                _movies.value = moviesRepository.findPopularMovies()
+                _movies.value = getPopularMovies.invoke()
                 _status.value = MovieApiStatus.DONE
             }
             catch (e: Exception)

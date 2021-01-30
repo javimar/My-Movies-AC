@@ -2,7 +2,7 @@ package eu.javimar.mymoviesac
 
 import android.app.Application
 import androidx.room.Room
-import eu.javimar.mymoviesac.model.database.MovieDatabase
+import eu.javimar.mymoviesac.data.database.MovieDatabase
 
 class MoviesApp : Application()
 {

@@ -2,17 +2,12 @@ package eu.javimar.mymoviesac.ui
 
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import eu.javimar.mymoviesac.R
-import eu.javimar.mymoviesac.model.database.Movie
-import eu.javimar.mymoviesac.model.server.MovieDbResult
-import eu.javimar.mymoviesac.ui.main.MovieAdapter
 import eu.javimar.mymoviesac.ui.main.MovieApiStatus
 
 

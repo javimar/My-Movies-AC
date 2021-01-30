@@ -1,4 +1,4 @@
-package eu.javimar.mymoviesac
+package eu.javimar.mymoviesac.common
 
 import android.app.Activity
 import com.karumi.dexter.Dexter

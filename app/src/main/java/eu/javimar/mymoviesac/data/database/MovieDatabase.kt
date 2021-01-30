@@ -1,4 +1,4 @@
-package eu.javimar.mymoviesac.model.database
+package eu.javimar.mymoviesac.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

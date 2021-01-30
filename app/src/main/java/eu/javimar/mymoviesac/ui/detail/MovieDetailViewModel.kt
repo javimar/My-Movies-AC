@@ -4,12 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import eu.javimar.mymoviesac.model.database.Movie
-import eu.javimar.mymoviesac.model.server.MoviesRepository
+import eu.javimar.domain.Movie
+import eu.javimar.usecases.FindMovieById
+import eu.javimar.usecases.ToggleMovieFavorite
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel(private val movieId: Int,
-                           private val moviesRepository: MoviesRepository) : ViewModel()
+                           private val findMovieById: FindMovieById,
+                           private val toggleFavorite: ToggleMovieFavorite
+) : ViewModel()
 {
     private val _selectedMovie = MutableLiveData<Movie>()
     val selectedMovie: LiveData<Movie>
@@ -22,7 +25,7 @@ class MovieDetailViewModel(private val movieId: Int,
     // Initialize the _selectedMovie MutableLiveData
     init {
         viewModelScope.launch {
-            _selectedMovie.value = moviesRepository.findMovieById(movieId)
+            _selectedMovie.value = findMovieById(movieId)
             updateUi()
         }
     }
@@ -34,7 +37,7 @@ class MovieDetailViewModel(private val movieId: Int,
                 val updatedMovie = it.copy(favorite = !it.favorite)
                 _selectedMovie.value = updatedMovie
                 updateUi()
-                moviesRepository.updateMovie(updatedMovie)
+                toggleFavorite.invoke(it)
             }
         }
     }

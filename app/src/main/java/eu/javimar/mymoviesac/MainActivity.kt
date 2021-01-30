@@ -1,4 +1,4 @@
-package eu.javimar.mymoviesac.ui.main
+package eu.javimar.mymoviesac
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

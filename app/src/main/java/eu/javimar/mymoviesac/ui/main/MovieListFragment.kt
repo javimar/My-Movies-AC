@@ -7,12 +7,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import eu.javimar.mymoviesac.PermissionRequester
+import eu.javimar.data.repository.MoviesRepository
+import eu.javimar.data.repository.RegionRepository
+import eu.javimar.mymoviesac.common.PermissionRequester
 import eu.javimar.mymoviesac.R
 import eu.javimar.mymoviesac.common.app
 import eu.javimar.mymoviesac.common.getViewModel
+import eu.javimar.mymoviesac.data.AndroidPermissionChecker
 import eu.javimar.mymoviesac.databinding.FragmentMovieListingBinding
-import eu.javimar.mymoviesac.model.server.MoviesRepository
+import eu.javimar.mymoviesac.data.PlayServicesLocationDataSource
+import eu.javimar.mymoviesac.data.database.RoomDataSource
+import eu.javimar.mymoviesac.data.server.TheMovieDbDataSource
+import eu.javimar.usecases.GetPopularMovies
 
 
 class MovieListFragment: Fragment()
@@ -30,7 +36,22 @@ class MovieListFragment: Fragment()
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_movie_listing, container,false)
 
-        viewModel = getViewModel { MovieListingViewModel(MoviesRepository(app)) }
+        viewModel = getViewModel {
+            MovieListingViewModel(
+                GetPopularMovies(
+                    MoviesRepository(
+                        RoomDataSource(app.database),
+                        TheMovieDbDataSource(),
+                        RegionRepository(
+                            PlayServicesLocationDataSource(app),
+                            AndroidPermissionChecker(app)
+                        ),
+                        app.getString(R.string.API_KEY)
+                    )
+                )
+            )
+        }
+
 
         viewModel.requestLocationPermission.observe(viewLifecycleOwner, {
             coarsePermissionRequester.request {

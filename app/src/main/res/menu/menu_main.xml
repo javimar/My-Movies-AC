@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="eu.javimar.mymoviesac.ui.main.MainActivity">
+    tools:context="eu.javimar.mymoviesac.MainActivity">
 
     <item
         android:id="@+id/action_popular"

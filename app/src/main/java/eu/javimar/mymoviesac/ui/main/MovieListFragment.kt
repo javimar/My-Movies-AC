@@ -4,54 +4,27 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import eu.javimar.data.repository.MoviesRepository
-import eu.javimar.data.repository.RegionRepository
 import eu.javimar.mymoviesac.common.PermissionRequester
 import eu.javimar.mymoviesac.R
-import eu.javimar.mymoviesac.common.app
-import eu.javimar.mymoviesac.common.getViewModel
-import eu.javimar.mymoviesac.data.AndroidPermissionChecker
 import eu.javimar.mymoviesac.databinding.FragmentMovieListingBinding
-import eu.javimar.mymoviesac.data.PlayServicesLocationDataSource
-import eu.javimar.mymoviesac.data.database.RoomDataSource
-import eu.javimar.mymoviesac.data.server.TheMovieDbDataSource
-import eu.javimar.usecases.GetPopularMovies
+import org.koin.androidx.scope.ScopeFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-class MovieListFragment: Fragment()
+class MovieListFragment: ScopeFragment()
 {
-    private lateinit var viewModel: MovieListingViewModel
+    private val viewModel: MovieListingViewModel by viewModel()
     private val coarsePermissionRequester by lazy {
         PermissionRequester(requireActivity(), ACCESS_COARSE_LOCATION)
     }
     private lateinit var binding: FragmentMovieListingBinding
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View
     {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_movie_listing, container,false)
-
-        viewModel = getViewModel {
-            MovieListingViewModel(
-                GetPopularMovies(
-                    MoviesRepository(
-                        RoomDataSource(app.database),
-                        TheMovieDbDataSource(),
-                        RegionRepository(
-                            PlayServicesLocationDataSource(app),
-                            AndroidPermissionChecker(app)
-                        ),
-                        app.getString(R.string.API_KEY)
-                    )
-                )
-            )
-        }
-
 
         viewModel.requestLocationPermission.observe(viewLifecycleOwner, {
             coarsePermissionRequester.request {

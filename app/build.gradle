@@ -90,6 +90,9 @@ dependencies {
     // Retrofit with Moshi Converter
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
 
+    // KOIN
+    implementation "org.koin:koin-androidx-viewmodel:2.2.0-rc-4"
+
     // Testing
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

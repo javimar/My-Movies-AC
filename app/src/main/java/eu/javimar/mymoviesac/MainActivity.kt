@@ -1,10 +1,10 @@
+@file:Suppress("UnusedImport")
+
 package eu.javimar.mymoviesac
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
-import eu.javimar.mymoviesac.R
 
 class MainActivity : AppCompatActivity()
 {

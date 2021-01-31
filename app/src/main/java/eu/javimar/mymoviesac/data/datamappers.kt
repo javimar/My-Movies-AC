@@ -20,7 +20,8 @@ fun Movie.toRoomMovie(): DomainMovie =
         favorite
     )
 
-fun DomainMovie.toDomainMovie(): Movie = Movie(
+fun DomainMovie.toDomainMovie(): Movie =
+    Movie(
     id,
     title,
     overview,
@@ -36,7 +37,7 @@ fun DomainMovie.toDomainMovie(): Movie = Movie(
 
 fun ServerMovie.toDomainMovie(): Movie =
     Movie(
-        0,
+        id,
         title,
         overview,
         releaseDate,

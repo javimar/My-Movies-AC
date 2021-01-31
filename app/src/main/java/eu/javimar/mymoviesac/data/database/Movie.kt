@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity
 data class Movie(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: Int,
     val title: String,
     val overview: String,

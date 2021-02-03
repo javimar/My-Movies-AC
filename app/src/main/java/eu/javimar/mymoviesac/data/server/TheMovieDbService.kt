@@ -7,7 +7,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-
 private const val BASE_URL = "https://api.themoviedb.org/3/"
 
 /**
@@ -28,14 +27,16 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 /**
- * A public interface that exposes the [listPopularMoviesAsync] method
+ * A public interface that exposes the [listMoviesAsync] method
  */
 interface TheMovieDbService
 {
-    @GET("discover/movie?sort_by=popularity.desc")
-    suspend fun listPopularMoviesAsync(
+    @GET("discover/movie")
+    suspend fun listMoviesAsync(
         @Query("api_key") apiKey: String,
-        @Query("region") region: String
+        @Query("region") region: String,
+        @Query("sort_by") sortBy: String,
+        @Query("year") year: String
     ): MovieDbResult
 }
 

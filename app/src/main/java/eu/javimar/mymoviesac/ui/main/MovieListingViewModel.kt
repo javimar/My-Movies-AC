@@ -1,13 +1,16 @@
 package eu.javimar.mymoviesac.ui.main
 
+import android.util.Log
 import androidx.lifecycle.*
 import eu.javimar.domain.Movie
-import eu.javimar.usecases.GetPopularMovies
+import eu.javimar.usecases.GetMovies
 import kotlinx.coroutines.launch
 
 enum class MovieApiStatus { LOADING, ERROR, DONE }
 
-class MovieListingViewModel(private val getPopularMovies: GetPopularMovies) : ViewModel()
+class MovieListingViewModel(private var sortBy: String,
+                            private var year: String,
+                            private val getMovies: GetMovies) : ViewModel()
 {
     // The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<MovieApiStatus>()
@@ -26,6 +29,14 @@ class MovieListingViewModel(private val getPopularMovies: GetPopularMovies) : Vi
     val requestLocationPermission: LiveData<Unit>
         get() = _requestLocationPermission
 
+
+    fun changeSortTypeAndYear(sort: String, year: String)
+    {
+        sortBy = sort
+        this.year = year
+        onCoarsePermissionRequested()
+    }
+
     init {
         refresh()
     }
@@ -36,11 +47,17 @@ class MovieListingViewModel(private val getPopularMovies: GetPopularMovies) : Vi
 
     fun onCoarsePermissionRequested()
     {
+
+        //TODO
+        Log.e("JAVIER", "SORT= " + sortBy)
+        Log.e("JAVIER", "AÑO= " + year)
+
+
         viewModelScope.launch {
             _status.value = MovieApiStatus.LOADING
             try
             {
-                _movies.value = getPopularMovies.invoke()
+                _movies.value = getMovies.invoke(sortBy, year)
                 _status.value = MovieApiStatus.DONE
             }
             catch (e: Exception)

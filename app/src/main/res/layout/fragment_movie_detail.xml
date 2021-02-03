@@ -110,7 +110,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="2dp"
                         android:layout_toEndOf="@id/placePoster"
-                        android:text="@{viewmodel.selectedMovie.releaseDate}"
+                        app:formatDate="@{viewmodel.selectedMovie.releaseDate}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         tools:text="1969" />
 

@@ -8,8 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-class RoomDataSource(db: MovieDatabase) : LocalDataSource {
-
+class RoomDataSource(db: MovieDatabase) : LocalDataSource
+{
     private val movieDao = db.movieDao()
 
     override suspend fun isEmpty(): Boolean =
@@ -19,7 +19,7 @@ class RoomDataSource(db: MovieDatabase) : LocalDataSource {
         withContext(Dispatchers.IO) { movieDao.insertMovies(movies.map { it.toRoomMovie() }) }
     }
 
-    override suspend fun getPopularMovies(): List<Movie> = withContext(Dispatchers.IO) {
+    override suspend fun getMovies(): List<Movie> = withContext(Dispatchers.IO) {
         movieDao.getAllMovies().map { it.toDomainMovie() }
     }
 

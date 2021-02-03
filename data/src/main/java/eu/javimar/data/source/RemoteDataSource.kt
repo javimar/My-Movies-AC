@@ -4,5 +4,10 @@ import eu.javimar.domain.Movie
 
 
 interface RemoteDataSource {
-    suspend fun getPopularMovies(apiKey: String, region: String): List<Movie>
+    suspend fun getMovies(
+        apiKey: String,
+        region: String,
+        sortBy: String,
+        sortYear: String
+    ): List<Movie>
 }

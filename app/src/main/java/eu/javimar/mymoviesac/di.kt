@@ -16,7 +16,7 @@ import eu.javimar.mymoviesac.ui.detail.MovieDetailViewModel
 import eu.javimar.mymoviesac.ui.main.MovieListFragment
 import eu.javimar.mymoviesac.ui.main.MovieListingViewModel
 import eu.javimar.usecases.FindMovieById
-import eu.javimar.usecases.GetPopularMovies
+import eu.javimar.usecases.GetMovies
 import eu.javimar.usecases.ToggleMovieFavorite
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -47,13 +47,16 @@ private val appModule = module {
 
 private val dataModule = module {
     factory { RegionRepository(get(), get()) }
-    factory { MoviesRepository(get(), get(), get(), get(named("API_KEY"))) }
+    factory { MoviesRepository(
+        get(), get(), get(),
+        get(named("API_KEY"))
+    )}
 }
 
 private val scopesModule = module {
     scope(named<MovieListFragment>()) {
-        viewModel { MovieListingViewModel(get()) }
-        scoped { GetPopularMovies(get()) }
+        viewModel { (sortBy: String, year: String) -> MovieListingViewModel(sortBy, year, get()) }
+        scoped { GetMovies(get()) }
     }
 
     scope(named<MovieDetailFragment>()) {

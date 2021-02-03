@@ -11,18 +11,21 @@ class MoviesRepository(
     private val apiKey: String)
 {
 
-    suspend fun getPopularMovies(): List<Movie>
+    // TODO arreglar popular vs. new movies en base al menu respetando el favorito
+    suspend fun getMovies(sortBy: String, sortYear: String): List<Movie>
     {
-        if(localDataSource.isEmpty())
-        {
-            val movies = remoteDataSource.getPopularMovies(apiKey, regionRepository.findLastRegion())
+       // if(localDataSource.isEmpty())
+       // {
+            val movies = remoteDataSource
+                .getMovies(apiKey, regionRepository.findLastRegion(), sortBy, sortYear)
+
             localDataSource.saveMovies(movies)
-        }
-        return localDataSource.getPopularMovies()
+       // }
+        // Database is always Single Source of Truth
+        return localDataSource.getMovies()
     }
 
     suspend fun findMovieById(id: Int): Movie = localDataSource.findMovieById(id)
 
     suspend fun updateMovie(movie: Movie) = localDataSource.updateMovie(movie)
-
 }

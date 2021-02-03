@@ -11,10 +11,18 @@ import eu.javimar.mymoviesac.R
 import eu.javimar.mymoviesac.databinding.FragmentMovieListingBinding
 import org.koin.androidx.scope.ScopeFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import java.time.LocalDate
 
 class MovieListFragment: ScopeFragment()
 {
-    private val viewModel: MovieListingViewModel by viewModel()
+    private var year: String = "2021"
+    private var sortBy: String = SORT_BY_YEAR
+
+    private val viewModel: MovieListingViewModel by viewModel {
+        parametersOf(sortBy, year)
+    }
+
     private val coarsePermissionRequester by lazy {
         PermissionRequester(requireActivity(), ACCESS_COARSE_LOCATION)
     }
@@ -43,7 +51,7 @@ class MovieListFragment: ScopeFragment()
         }
 
         subscribeUi(adapter)
-        
+
         return binding.root
     }
 
@@ -57,15 +65,23 @@ class MovieListFragment: ScopeFragment()
         binding.mainBar.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_popular -> {
-                    // TODO add functionality to handle menu request popular and new movies
                     // Navigate to most populat
+                    sortBy = SORT_BY_POPULARITY
+                    year = ""
+                    viewModel.changeSortTypeAndYear(sortBy, year)
                     true
                 }
                 R.id.action_new -> {
                     // Navigate to new movies
+                    sortBy = SORT_BY_YEAR
+                    year = LocalDate.now().year.toString()
+                    viewModel.changeSortTypeAndYear(sortBy, year)
                     true
                 }
-                else -> true
+                else -> {
+                    sortBy = SORT_BY_POPULARITY
+                    true
+                }
             }
         }
     }
@@ -75,7 +91,6 @@ class MovieListFragment: ScopeFragment()
         viewModel.navigateToSelectedMovie.observe(viewLifecycleOwner, { id ->
             id?.let {
                 // Find the NavController from the Fragment
-
                 this.findNavController().navigate(MovieListFragmentDirections
                     .actionMovieListFragmentToMovieDetailFragment().setId(it))
                 // Signal navigation ended
@@ -89,5 +104,10 @@ class MovieListFragment: ScopeFragment()
                 adapter.submitList(it)
             }
         })
+    }
+
+    companion object {
+        private const val SORT_BY_YEAR = "release_date.desc"
+        private const val SORT_BY_POPULARITY = "popularity.desc"
     }
 }

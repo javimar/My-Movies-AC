@@ -4,11 +4,14 @@ import eu.javimar.data.source.RemoteDataSource
 import eu.javimar.domain.Movie
 import eu.javimar.mymoviesac.data.toDomainMovie
 
-class TheMovieDbDataSource : RemoteDataSource {
-
-    override suspend fun getPopularMovies(apiKey: String, region: String): List<Movie> =
+class TheMovieDbDataSource : RemoteDataSource
+{
+    override suspend fun getMovies(
+        apiKey: String, region: String,
+        sortBy: String, sortYear: String
+    ): List<Movie> =
         MoviesApi.retrofitService
-            .listPopularMoviesAsync(apiKey, region)
+            .listMoviesAsync(apiKey, region, sortBy, sortYear)
             .results
             .map {
                 it.toDomainMovie()

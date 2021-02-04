@@ -1,11 +1,32 @@
 <resources>
     <string name="app_name">My Movies AC</string>
 
-    <string name="action_settings">Settings</string>
 
     <string name="action_popular_movies">Most Popular</string>
-    <string name="action_new_movies">New Movies</string>
+    <string name="action_new_movies">This Year Movies</string>
+    <string name="action_settings">Settings</string>
 
     <string name="detail_ratings_literal_10" translatable="false">/10</string>
+
+
+    <!-- PREFERENCE SCREEN -->
+    <string name="spanishLang">Spanish</string>
+    <string name="engLang">English</string>
+
+    <string name="pref_movie_settings">Movie Settings</string>
+
+    <string name="pref_dev_location_key" translatable="false">USE DEVICE LOCATION</string>
+    <string name="pref_dev_location_title">Use device location</string>
+    <string name="pref_dev_location_summary">Allow the app to get the location</string>
+
+    <string name="pref_custom_location_key" translatable="false">CUSTOM LOCATION</string>
+    <string name="pref_custom_location_title">Location</string>
+    <string name="pref_custom_location_summary">The location for the movies</string>
+
+    <string name="pref_language_key" translatable="false">LANGUAGE</string>
+    <string name="pref_language_title">Language for Movie listing</string>
+    <string name="pref_language_summary">%s</string>
+
+    <string name="locationMadrid">Madrid</string>
 
 </resources>

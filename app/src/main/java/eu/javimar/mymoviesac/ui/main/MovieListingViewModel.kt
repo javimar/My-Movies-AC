@@ -1,6 +1,5 @@
 package eu.javimar.mymoviesac.ui.main
 
-import android.util.Log
 import androidx.lifecycle.*
 import eu.javimar.domain.Movie
 import eu.javimar.usecases.GetMovies
@@ -47,11 +46,6 @@ class MovieListingViewModel(private var sortBy: String,
 
     fun onCoarsePermissionRequested()
     {
-
-        //TODO
-        Log.e("JAVIER", "SORT= " + sortBy)
-        Log.e("JAVIER", "AÑO= " + year)
-
 
         viewModelScope.launch {
             _status.value = MovieApiStatus.LOADING

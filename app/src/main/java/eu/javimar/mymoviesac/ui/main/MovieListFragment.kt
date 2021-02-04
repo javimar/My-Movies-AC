@@ -16,8 +16,8 @@ import java.time.LocalDate
 
 class MovieListFragment: ScopeFragment()
 {
-    private var year: String = "2021"
-    private var sortBy: String = SORT_BY_YEAR
+    private var year: String = ""
+    private var sortBy: String = SORT_BY_POPULARITY
 
     private val viewModel: MovieListingViewModel by viewModel {
         parametersOf(sortBy, year)
@@ -76,6 +76,10 @@ class MovieListFragment: ScopeFragment()
                     sortBy = SORT_BY_YEAR
                     year = LocalDate.now().year.toString()
                     viewModel.changeSortTypeAndYear(sortBy, year)
+                    true
+                }
+                R.id.action_settings -> {
+                    navController.navigate(R.id.open_settings_fragment)
                     true
                 }
                 else -> {

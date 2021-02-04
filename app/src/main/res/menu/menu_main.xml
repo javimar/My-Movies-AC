@@ -15,4 +15,11 @@
         android:title="@string/action_new_movies"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="115"
+        android:title="@string/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        app:showAsAction="never" />
+
 </menu>

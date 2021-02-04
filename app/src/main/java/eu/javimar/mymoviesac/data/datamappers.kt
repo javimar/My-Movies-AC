@@ -41,7 +41,7 @@ fun ServerMovie.toDomainMovie(): Movie =
         title,
         overview,
         releaseDate,
-        "https://image.tmdb.org/t/p/w185/$posterPath",
+        "https://image.tmdb.org/t/p/w185/${posterPath ?: ""}",
         "https://image.tmdb.org/t/p/w780${backdropPath ?: posterPath}",
         originalLanguage,
         originalTitle,

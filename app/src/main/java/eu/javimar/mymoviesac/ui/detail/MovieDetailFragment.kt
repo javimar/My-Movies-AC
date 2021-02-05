@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.NavigationUI
 import eu.javimar.mymoviesac.R
 import eu.javimar.mymoviesac.databinding.FragmentMovieDetailBinding
 import org.koin.androidx.scope.ScopeFragment
@@ -26,6 +29,9 @@ class MovieDetailFragment: ScopeFragment()
     {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_movie_detail, container,false)
+
+        (activity as AppCompatActivity).setSupportActionBar(binding.movieDetailToolbar)
+        NavigationUI.setupActionBarWithNavController((activity as AppCompatActivity), findNavController())
 
         return binding.root
     }

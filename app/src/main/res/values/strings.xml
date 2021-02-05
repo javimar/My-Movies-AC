@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">My Movies AC</string>
 
+    <string name="title_popular_movies">Most Popular</string>
+    <string name="title_new_movies">%1$s Movies</string>
 
     <string name="action_popular_movies">Most Popular</string>
     <string name="action_new_movies">This Year Movies</string>

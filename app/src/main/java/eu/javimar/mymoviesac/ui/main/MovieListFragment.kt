@@ -3,9 +3,9 @@ package eu.javimar.mymoviesac.ui.main
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import eu.javimar.mymoviesac.common.PermissionRequester
 import eu.javimar.mymoviesac.R
 import eu.javimar.mymoviesac.databinding.FragmentMovieListingBinding
@@ -34,6 +34,10 @@ class MovieListFragment: ScopeFragment()
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_movie_listing, container,false)
 
+        setHasOptionsMenu(true)
+        (activity as AppCompatActivity).setSupportActionBar(binding.mainBar.toolbar)
+        binding.mainBar.toolbar.setTitle(R.string.title_popular_movies)
+
         viewModel.requestLocationPermission.observe(viewLifecycleOwner, {
             coarsePermissionRequester.request {
                 viewModel.onCoarsePermissionRequested()
@@ -55,41 +59,6 @@ class MovieListFragment: ScopeFragment()
         return binding.root
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    {
-        val navController = findNavController()
-        binding.mainBar.toolbar.setTitle(R.string.app_name)
-        binding.mainBar.toolbar.setupWithNavController(navController)
-        binding.mainBar.toolbar.inflateMenu(R.menu.menu_main)
-        binding.mainBar.toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_popular -> {
-                    // Navigate to most populat
-                    sortBy = SORT_BY_POPULARITY
-                    year = ""
-                    viewModel.changeSortTypeAndYear(sortBy, year)
-                    true
-                }
-                R.id.action_new -> {
-                    // Navigate to new movies
-                    sortBy = SORT_BY_YEAR
-                    year = LocalDate.now().year.toString()
-                    viewModel.changeSortTypeAndYear(sortBy, year)
-                    true
-                }
-                R.id.action_settings -> {
-                    navController.navigate(R.id.open_settings_fragment)
-                    true
-                }
-                else -> {
-                    sortBy = SORT_BY_POPULARITY
-                    true
-                }
-            }
-        }
-    }
-
     private fun subscribeUi(adapter: MovieAdapter)
     {
         viewModel.navigateToSelectedMovie.observe(viewLifecycleOwner, { id ->
@@ -109,6 +78,47 @@ class MovieListFragment: ScopeFragment()
             }
         })
     }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
+    {
+        inflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        return when (item.itemId) {
+            R.id.action_popular -> {
+                binding.mainBar.toolbar.setTitle(R.string.title_popular_movies)
+                // Navigate to most populat
+                sortBy = SORT_BY_POPULARITY
+                year = ""
+                viewModel.changeSortTypeAndYear(sortBy, year)
+                true
+            }
+            R.id.action_new -> {
+                // Navigate to new movies
+                sortBy = SORT_BY_YEAR
+                year = LocalDate.now().year.toString()
+                binding.mainBar.toolbar.title = String.format(getString(R.string.title_new_movies), year)
+                viewModel.changeSortTypeAndYear(sortBy, year)
+                true
+            }
+            R.id.action_settings -> {
+                findNavController().navigate(R.id.open_settings_fragment)
+                true
+            }
+            else -> {
+                sortBy = SORT_BY_POPULARITY
+                true
+            }
+        }
+    }
+
+
+
+
+
 
     companion object {
         private const val SORT_BY_YEAR = "release_date.desc"

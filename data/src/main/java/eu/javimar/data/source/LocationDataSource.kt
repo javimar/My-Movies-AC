@@ -1,5 +1,7 @@
 package eu.javimar.data.source
 
-interface LocationDataSource {
+interface LocationDataSource
+{
+    // Could return null
     suspend fun findLastRegion(): String?
 }

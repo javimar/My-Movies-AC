@@ -6,7 +6,7 @@ import eu.javimar.mymoviesac.data.toDomainMovie
 
 class TheMovieDbDataSource : RemoteDataSource
 {
-    override suspend fun getMovies(
+    override suspend fun refreshMovies(
         apiKey: String, region: String,
         sortBy: String, sortYear: String
     ): List<Movie> =

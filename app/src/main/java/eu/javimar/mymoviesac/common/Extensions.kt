@@ -4,8 +4,22 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import es.dmoral.toasty.Toasty
 import eu.javimar.mymoviesac.MoviesApp
+
+
+fun Context.toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT)
+{
+    Toast.makeText(this, this.resources.getText(resId), duration).show()
+}
+
+fun Context.showError(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT)
+{
+    Toasty.error(this, this.resources.getText(resId), duration).show()
+}
 
 val Context.app: MoviesApp
     get() = applicationContext as MoviesApp

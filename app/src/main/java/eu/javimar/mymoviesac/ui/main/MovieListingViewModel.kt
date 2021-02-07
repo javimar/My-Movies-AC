@@ -5,29 +5,31 @@ import eu.javimar.domain.Movie
 import eu.javimar.usecases.GetMovies
 import kotlinx.coroutines.launch
 
-enum class MovieApiStatus { LOADING, ERROR, DONE }
-
 class MovieListingViewModel(private var sortBy: String,
                             private var year: String,
-                            private val getMovies: GetMovies) : ViewModel()
+                            private val refreshMovies: GetMovies) : ViewModel()
 {
-    // The internal MutableLiveData that stores the status of the most recent request
-    private val _status = MutableLiveData<MovieApiStatus>()
-    val status: LiveData<MovieApiStatus>
-        get() = _status
+    private val _status = MutableLiveData<UIModel>()
+    val status: LiveData<UIModel>
+        get() {
+            if(_status.value == null)  refresh()
+            return _status
+        }
 
-    private val _movies = MutableLiveData<List<Movie>>()
-    val movies: LiveData<List<Movie>>
-        get() = _movies
+    sealed class UIModel
+    {
+        object Loading : UIModel()
+        data class Loaded(val movies: List<Movie>) : UIModel()
+        data class Navigated(val movieId: Int) : UIModel()
+        object RequestLocationPermission : UIModel()
+        object Error : UIModel()
+    }
 
-    private val _navigateToSelectedMovie = MutableLiveData<Int>()
-    val navigateToSelectedMovie: LiveData<Int>
-        get() = _navigateToSelectedMovie
 
-    private val _requestLocationPermission = MutableLiveData<Unit>()
-    val requestLocationPermission: LiveData<Unit>
-        get() = _requestLocationPermission
-
+    private fun refresh()
+    {
+        _status.value = UIModel.RequestLocationPermission
+    }
 
     fun changeSortTypeAndYear(sort: String, year: String)
     {
@@ -36,39 +38,28 @@ class MovieListingViewModel(private var sortBy: String,
         onCoarsePermissionRequested()
     }
 
-    init {
-        refresh()
-    }
-
-    private fun refresh() {
-        _requestLocationPermission.value = Unit
-    }
-
     fun onCoarsePermissionRequested()
     {
-
         viewModelScope.launch {
-            _status.value = MovieApiStatus.LOADING
+            _status.value = UIModel.Loading
             try
             {
-                _movies.value = getMovies.invoke(sortBy, year)
-                _status.value = MovieApiStatus.DONE
+                _status.value = UIModel.Loaded(refreshMovies.invoke(sortBy, year))
             }
             catch (e: Exception)
             {
-                _status.value = MovieApiStatus.ERROR
-                _movies.value = null
+                _status.value = UIModel.Error
             }
         }
     }
 
-
-    fun displayMovieDetails(id: Int) {
-        _navigateToSelectedMovie.value = id
+    fun onMovieClicked(movieId: Int)
+    {
+        _status.value = UIModel.Navigated(movieId)
     }
 
-    // After the navigation has taken place, make sure is set to null
-    fun displayMovieDetailsComplete() {
-        _navigateToSelectedMovie.value = null
+    fun onMovieNavigated()
+    {
+        refresh()
     }
 }

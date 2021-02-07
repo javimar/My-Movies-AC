@@ -3,12 +3,18 @@ package eu.javimar.mymoviesac.ui.main
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.os.Bundle
 import android.view.*
+import android.view.View.GONE
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import eu.javimar.mymoviesac.common.PermissionRequester
 import eu.javimar.mymoviesac.R
+import eu.javimar.mymoviesac.common.isConnected
+import eu.javimar.mymoviesac.common.showError
 import eu.javimar.mymoviesac.databinding.FragmentMovieListingBinding
+import eu.javimar.mymoviesac.ui.main.MovieListingViewModel.UIModel
 import org.koin.androidx.scope.ScopeFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -19,10 +25,11 @@ class MovieListFragment: ScopeFragment()
     private var year: String = ""
     private var sortBy: String = SORT_BY_POPULARITY
 
+    private lateinit var adapter: MovieAdapter
+
     private val viewModel: MovieListingViewModel by viewModel {
         parametersOf(sortBy, year)
     }
-
     private val coarsePermissionRequester by lazy {
         PermissionRequester(requireActivity(), ACCESS_COARSE_LOCATION)
     }
@@ -38,14 +45,9 @@ class MovieListFragment: ScopeFragment()
         (activity as AppCompatActivity).setSupportActionBar(binding.mainBar.toolbar)
         binding.mainBar.toolbar.setTitle(R.string.title_popular_movies)
 
-        viewModel.requestLocationPermission.observe(viewLifecycleOwner, {
-            coarsePermissionRequester.request {
-                viewModel.onCoarsePermissionRequested()
-            }
-        })
 
-        val adapter = MovieAdapter(MovieAdapter.MovieClickListener {
-            viewModel.displayMovieDetails(it)
+        adapter = MovieAdapter(MovieAdapter.MovieClickListener {
+            viewModel.onMovieClicked(it)
         })
         binding.recyclerViewMovies.adapter = adapter
 
@@ -54,29 +56,44 @@ class MovieListFragment: ScopeFragment()
             lifecycleOwner = this@MovieListFragment
         }
 
-        subscribeUi(adapter)
+        viewModel.status.observe(viewLifecycleOwner, Observer(::updateUi))
 
         return binding.root
     }
 
-    private fun subscribeUi(adapter: MovieAdapter)
-    {
-        viewModel.navigateToSelectedMovie.observe(viewLifecycleOwner, { id ->
-            id?.let {
-                // Find the NavController from the Fragment
-                this.findNavController().navigate(MovieListFragmentDirections
-                    .actionMovieListFragmentToMovieDetailFragment().setId(it))
-                // Signal navigation ended
-                viewModel.displayMovieDetailsComplete()
-            }
-        })
 
-        // Observe List of movies from ViewModel and refresh if changes occur
-        viewModel.movies.observe(viewLifecycleOwner, {
-            it?.let {
-                adapter.submitList(it)
+    private fun updateUi(status: UIModel)
+    {
+        when (status)
+        {
+            is UIModel.Loading -> binding.statusImage.setImageResource(R.drawable.loading_animation)
+
+            is UIModel.Loaded -> {
+                binding.statusImage.visibility = GONE
+                adapter.submitList(status.movies)
             }
-        })
+
+            is UIModel.Navigated ->  {
+                this.findNavController().navigate(MovieListFragmentDirections
+                    .actionMovieListFragmentToMovieDetailFragment().setId(status.movieId))
+                viewModel.onMovieNavigated()
+            }
+
+            is UIModel.RequestLocationPermission -> coarsePermissionRequester.request {
+                viewModel.onCoarsePermissionRequested()
+            }
+            is UIModel.Error -> {
+                if(requireActivity().isConnected)
+                {
+                    requireActivity().showError(R.string.err_server, Toast.LENGTH_SHORT)
+                }
+                else
+                {
+                    binding.statusImage.setImageResource(R.drawable.ic_connection_error)
+                    requireActivity().showError(R.string.err_nointernet, Toast.LENGTH_SHORT)
+                }
+            }
+        }
     }
 
 
@@ -87,7 +104,8 @@ class MovieListFragment: ScopeFragment()
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
-        return when (item.itemId) {
+        return when (item.itemId)
+        {
             R.id.action_popular -> {
                 binding.mainBar.toolbar.setTitle(R.string.title_popular_movies)
                 // Navigate to most populat
@@ -114,11 +132,6 @@ class MovieListFragment: ScopeFragment()
             }
         }
     }
-
-
-
-
-
 
     companion object {
         private const val SORT_BY_YEAR = "release_date.desc"

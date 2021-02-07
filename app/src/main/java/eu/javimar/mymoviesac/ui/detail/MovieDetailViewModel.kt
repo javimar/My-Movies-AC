@@ -11,22 +11,16 @@ import kotlinx.coroutines.launch
 
 class MovieDetailViewModel(private val movieId: Int,
                            private val findMovieById: FindMovieById,
-                           private val toggleFavorite: ToggleMovieFavorite
-) : ViewModel()
+                           private val toggleFavorite: ToggleMovieFavorite) : ViewModel()
 {
     private val _selectedMovie = MutableLiveData<Movie>()
     val selectedMovie: LiveData<Movie>
         get() = _selectedMovie
 
-    private val _favorite = MutableLiveData<Boolean>()
-    val favorite: LiveData<Boolean>
-        get() = _favorite
-
     // Initialize the _selectedMovie MutableLiveData
     init {
         viewModelScope.launch {
             _selectedMovie.value = findMovieById(movieId)
-            updateUi()
         }
     }
 
@@ -36,16 +30,8 @@ class MovieDetailViewModel(private val movieId: Int,
             selectedMovie.value?.let {
                 val updatedMovie = it.copy(favorite = !it.favorite)
                 _selectedMovie.value = updatedMovie
-                updateUi()
                 toggleFavorite.invoke(it)
             }
-        }
-    }
-
-    private fun updateUi()
-    {
-        selectedMovie.value?.run {
-            _favorite.value = favorite
         }
     }
 }

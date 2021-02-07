@@ -31,4 +31,10 @@
 
     <string name="locationMadrid">Madrid</string>
 
+
+    <!-- ERROR STRINGS -->
+    <string name="err_nointernet">There is no internet connection</string>
+    <string name="err_server">There was an error while retrieving the movies</string>
+
+
 </resources>

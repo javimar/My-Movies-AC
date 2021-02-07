@@ -1,6 +1,5 @@
 package eu.javimar.mymoviesac.ui
 
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -9,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import eu.javimar.mymoviesac.R
-import eu.javimar.mymoviesac.ui.main.MovieApiStatus
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -31,33 +29,11 @@ fun bindImage(imgView: ImageView, imgUrl: String?)
     }
 }
 
-/**
- * This binding adapter displays the [MovieApiStatus] of the network request in an image view.  When
- * the request is loading, it displays a loading_animation.  If the request has an error, it
- * displays a broken image to reflect the connection error.  When the request is finished, it
- * hides the image view.
- */
-@BindingAdapter("movieApiStatus")
-fun bindStatus(statusImageView: ImageView, status: MovieApiStatus?)
-{
-    when (status) {
-        MovieApiStatus.LOADING -> {
-            statusImageView.visibility = View.VISIBLE
-            statusImageView.setImageResource(R.drawable.loading_animation)
-        }
-        MovieApiStatus.ERROR -> {
-            statusImageView.visibility = View.VISIBLE
-            statusImageView.setImageResource(R.drawable.ic_connection_error)
-        }
-        MovieApiStatus.DONE -> {
-            statusImageView.visibility = View.GONE
-        }
-    }
-}
 
 @BindingAdapter("favorite")
 fun FloatingActionButton.setFavorite(favorite: Boolean?) {
-    val icon = if (favorite == true) R.drawable.ic_favorite_on else R.drawable.ic_favorite_off
+    val icon = if (favorite == true) R.drawable.ic_favorite_on
+    else R.drawable.ic_favorite_off
     setImageDrawable(ContextCompat.getDrawable(context, icon))
 }
 

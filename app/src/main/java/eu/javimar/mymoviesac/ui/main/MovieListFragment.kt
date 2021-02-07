@@ -22,13 +22,14 @@ import java.time.LocalDate
 
 class MovieListFragment: ScopeFragment()
 {
-    private var year: String = ""
-    private var sortBy: String = SORT_BY_POPULARITY
+    private var year = ""
+    private var sortBy = SORT_BY_POPULARITY
+    private var isPopular = true
 
     private lateinit var adapter: MovieAdapter
 
     private val viewModel: MovieListingViewModel by viewModel {
-        parametersOf(sortBy, year)
+        parametersOf(sortBy, year, isPopular)
     }
     private val coarsePermissionRequester by lazy {
         PermissionRequester(requireActivity(), ACCESS_COARSE_LOCATION)
@@ -79,6 +80,7 @@ class MovieListFragment: ScopeFragment()
                 viewModel.onMovieNavigated()
             }
 
+            // First entry point when accepting permission
             is UIModel.RequestLocationPermission -> coarsePermissionRequester.request {
                 viewModel.onCoarsePermissionRequested()
             }
@@ -111,15 +113,17 @@ class MovieListFragment: ScopeFragment()
                 // Navigate to most populat
                 sortBy = SORT_BY_POPULARITY
                 year = ""
-                viewModel.changeSortTypeAndYear(sortBy, year)
+                isPopular = true
+                viewModel.changeSortTypeAndYear(sortBy, year, isPopular)
                 true
             }
             R.id.action_new -> {
                 // Navigate to new movies
-                sortBy = SORT_BY_YEAR
+                sortBy = ""
                 year = LocalDate.now().year.toString()
+                isPopular = false
                 binding.mainBar.toolbar.title = String.format(getString(R.string.title_new_movies), year)
-                viewModel.changeSortTypeAndYear(sortBy, year)
+                viewModel.changeSortTypeAndYear(sortBy, year, isPopular)
                 true
             }
             R.id.action_settings -> {
@@ -128,13 +132,15 @@ class MovieListFragment: ScopeFragment()
             }
             else -> {
                 sortBy = SORT_BY_POPULARITY
+                year = ""
+                isPopular = true
                 true
             }
         }
     }
 
     companion object {
-        private const val SORT_BY_YEAR = "release_date.desc"
+        //private const val SORT_BY_YEAR = "release_date.desc"
         private const val SORT_BY_POPULARITY = "popularity.desc"
     }
 }

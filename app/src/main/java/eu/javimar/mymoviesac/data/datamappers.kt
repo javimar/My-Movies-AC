@@ -17,7 +17,8 @@ fun Movie.toRoomMovie(): DomainMovie =
         originalTitle,
         popularity,
         voteAverage,
-        favorite
+        favorite,
+        true
     )
 
 fun DomainMovie.toDomainMovie(): Movie =
@@ -32,7 +33,8 @@ fun DomainMovie.toDomainMovie(): Movie =
     originalTitle,
     popularity,
     voteAverage,
-    favorite
+    favorite,
+    isPopular
 )
 
 fun ServerMovie.toDomainMovie(): Movie =
@@ -47,5 +49,6 @@ fun ServerMovie.toDomainMovie(): Movie =
         originalTitle,
         popularity,
         voteAverage,
-        false
+        favorite = false,
+        isPopular = true
     )

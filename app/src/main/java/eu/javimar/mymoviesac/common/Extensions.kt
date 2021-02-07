@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import es.dmoral.toasty.Toasty
 import eu.javimar.mymoviesac.MoviesApp
 
+fun Boolean.toInt() = if (this) 1 else 0
 
 fun Context.toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT)
 {

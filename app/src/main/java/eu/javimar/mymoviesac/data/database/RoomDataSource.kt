@@ -15,12 +15,17 @@ class RoomDataSource(db: MovieDatabase) : LocalDataSource
     override suspend fun isEmpty(): Boolean =
         withContext(Dispatchers.IO) { movieDao.movieCount() <= 0 }
 
-    override suspend fun saveMovies(movies: List<Movie>) {
-        withContext(Dispatchers.IO) { movieDao.insertMovies(movies.map { it.toRoomMovie() }) }
+    override suspend fun saveMovies(movies: List<Movie>, isPopular: Boolean) {
+        withContext(Dispatchers.IO) {
+            movieDao.insertPopularOrNewMovies(movies.map { it.toRoomMovie() }, isPopular) }
     }
 
-    override suspend fun getMovies(): List<Movie> = withContext(Dispatchers.IO) {
-        movieDao.getAllMovies().map { it.toDomainMovie() }
+    override suspend fun getAllPopularMovies(): List<Movie> = withContext(Dispatchers.IO) {
+        movieDao.getAllPopularMovies().map { it.toDomainMovie() }
+    }
+
+    override suspend fun getAllYearMovies(): List<Movie> = withContext(Dispatchers.IO) {
+        movieDao.getAllYearMovies().map { it.toDomainMovie() }
     }
 
     override suspend fun findMovieById(id: Int): Movie = withContext(Dispatchers.IO) {

@@ -55,7 +55,8 @@ private val dataModule = module {
 
 private val scopesModule = module {
     scope(named<MovieListFragment>()) {
-        viewModel { (sortBy: String, year: String) -> MovieListingViewModel(sortBy, year, get()) }
+        viewModel { (sortBy: String, year: String, isPopular: Boolean) ->
+            MovieListingViewModel(sortBy, year, isPopular, get()) }
         scoped { GetMovies(get()) }
     }
 

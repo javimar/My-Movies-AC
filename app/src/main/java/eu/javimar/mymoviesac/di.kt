@@ -38,7 +38,7 @@ fun Application.initDI()
 
 private val appModule = module {
     single(named("API_KEY")) { androidApplication().getString(R.string.API_KEY) }
-    single { MovieDatabase.build(get()) }
+    single { MovieDatabase.buildDatabase(get()) }
     factory<LocalDataSource> { RoomDataSource(get()) }
     factory<RemoteDataSource> { TheMovieDbDataSource() }
     factory<LocationDataSource> { PlayServicesLocationDataSource(get()) }

@@ -12,7 +12,7 @@ abstract class MovieDatabase : RoomDatabase()
     abstract fun movieDao(): MovieDao
 
     companion object {
-        fun build(context: Context) = Room.databaseBuilder(
+        fun buildDatabase(context: Context) = Room.databaseBuilder(
             context,
             MovieDatabase::class.java,
             "movie-db"

@@ -29,6 +29,9 @@ abstract class MovieDao
     @Query("UPDATE Movie SET isPopular = :popular WHERE id = :movieId")
     abstract fun updateIsPopular(movieId: Int, popular: Boolean)
 
+    @Query("DELETE FROM Movie WHERE favorite = 0")
+    abstract fun deleteAllMovies()
+
     @Transaction
     open fun insertPopularOrNewMovies(movies: List<Movie>, isPopular: Boolean)
     {

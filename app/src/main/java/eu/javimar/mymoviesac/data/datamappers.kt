@@ -18,7 +18,7 @@ fun Movie.toRoomMovie(): DomainMovie =
         popularity,
         voteAverage,
         favorite,
-        true
+        isPopular
     )
 
 fun DomainMovie.toDomainMovie(): Movie =

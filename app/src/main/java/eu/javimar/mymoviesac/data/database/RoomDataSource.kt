@@ -38,4 +38,8 @@ class RoomDataSource(db: MovieDatabase) : LocalDataSource
     override suspend fun updateMovie(movie: Movie) {
         withContext(Dispatchers.IO) { movieDao.updateMovie(movie.toRoomMovie()) }
     }
+
+    override suspend fun deleteMovies() {
+        withContext(Dispatchers.IO) { movieDao.deleteAllMovies() }
+    }
 }

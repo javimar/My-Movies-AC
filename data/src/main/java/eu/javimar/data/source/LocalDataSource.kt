@@ -10,4 +10,5 @@ interface LocalDataSource {
     suspend fun getAllYearMovies(): List<Movie>
     suspend fun findMovieById(id: Int): Movie
     suspend fun updateMovie(movie: Movie)
+    suspend fun deleteMovies()
 }

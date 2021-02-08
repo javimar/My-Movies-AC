@@ -46,4 +46,21 @@ class MoviesRepository(
     suspend fun findMovieById(id: Int): Movie = localDataSource.findMovieById(id)
 
     suspend fun updateMovie(movie: Movie) = localDataSource.updateMovie(movie)
+
+    suspend fun reloadMovies(sortBy: String,
+                              releaseDateGte: String,
+                              releaseDateLte: String)
+    {
+        localDataSource.deleteMovies()
+
+        var movies = remoteDataSource
+            .refreshMovies(apiKey, regionRepository.findLastRegion(),
+                sortBy, "", "")
+        localDataSource.saveMovies(movies, true)
+
+        movies = remoteDataSource
+            .refreshMovies(apiKey, regionRepository.findLastRegion(),
+                sortBy, releaseDateGte, releaseDateLte)
+        localDataSource.saveMovies(movies, false)
+    }
 }

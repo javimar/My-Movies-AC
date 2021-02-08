@@ -9,10 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import eu.javimar.mymoviesac.common.PermissionRequester
 import eu.javimar.mymoviesac.R
-import eu.javimar.mymoviesac.common.isConnected
-import eu.javimar.mymoviesac.common.showError
+import eu.javimar.mymoviesac.common.*
 import eu.javimar.mymoviesac.databinding.FragmentMovieListingBinding
 import eu.javimar.mymoviesac.ui.main.MovieListingViewModel.UIModel
 import org.koin.androidx.scope.ScopeFragment
@@ -22,14 +20,15 @@ import java.time.LocalDate
 
 class MovieListFragment: ScopeFragment()
 {
-    private var year = ""
+    private var releaseDateGte = ""
+    private var releaseDateLte = ""
     private var sortBy = SORT_BY_POPULARITY
     private var isPopular = true
 
     private lateinit var adapter: MovieAdapter
 
     private val viewModel: MovieListingViewModel by viewModel {
-        parametersOf(sortBy, year, isPopular)
+        parametersOf(sortBy, releaseDateGte, releaseDateLte, isPopular)
     }
     private val coarsePermissionRequester by lazy {
         PermissionRequester(requireActivity(), ACCESS_COARSE_LOCATION)
@@ -112,18 +111,18 @@ class MovieListFragment: ScopeFragment()
                 binding.mainBar.toolbar.setTitle(R.string.title_popular_movies)
                 // Navigate to most populat
                 sortBy = SORT_BY_POPULARITY
-                year = ""
                 isPopular = true
-                viewModel.changeSortTypeAndYear(sortBy, year, isPopular)
+                viewModel.changeSortTypeAndYear(sortBy, "", "", isPopular)
                 true
             }
             R.id.action_new -> {
-                // Navigate to new movies
+                // Navigate to new movies playing
                 sortBy = ""
-                year = LocalDate.now().year.toString()
+                releaseDateGte = getOneMonthBefore()
+                releaseDateLte = getTodayFormattedForQuery(LocalDate.now())
                 isPopular = false
-                binding.mainBar.toolbar.title = String.format(getString(R.string.title_new_movies), year)
-                viewModel.changeSortTypeAndYear(sortBy, year, isPopular)
+                binding.mainBar.toolbar.title = getString(R.string.title_new_movies)
+                viewModel.changeSortTypeAndYear(sortBy, releaseDateGte, releaseDateLte, isPopular)
                 true
             }
             R.id.action_settings -> {
@@ -132,7 +131,6 @@ class MovieListFragment: ScopeFragment()
             }
             else -> {
                 sortBy = SORT_BY_POPULARITY
-                year = ""
                 isPopular = true
                 true
             }

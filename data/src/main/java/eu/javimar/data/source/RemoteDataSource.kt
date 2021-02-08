@@ -8,6 +8,7 @@ interface RemoteDataSource {
         apiKey: String,
         region: String,
         sortBy: String,
-        sortYear: String
+        releaseDateGte: String,
+        releaseDateLte: String
     ): List<Movie>
 }

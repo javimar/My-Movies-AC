@@ -45,7 +45,8 @@ interface TheMovieDbService
         @Query("api_key") apiKey: String,
         @Query("region") region: String,
         @Query("sort_by") sortBy: String,
-        @Query("primary_release_year") year: String
+        @Query("primary_release_date.gte") releaseDateGte: String,
+        @Query("primary_release_date.lte") releaseDateLte: String
     ): MovieDbResult
 }
 

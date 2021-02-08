@@ -10,18 +10,33 @@ class MoviesRepository(
     private val regionRepository: RegionRepository,
     private val apiKey: String)
 {
-
-    // TODO arreglar popular vs. new movies en base al menu. Cache policy!!
-    suspend fun refreshMovies(sortBy: String, sortYear: String, isPopular: Boolean): List<Movie>
+    suspend fun refreshMovies(sortBy: String,
+                              releaseDateGte: String,
+                              releaseDateLte: String,
+                              isPopular: Boolean): List<Movie>
     {
-       // if(localDataSource.isEmpty())
-       // {
+        when (isPopular)
+        {
+            true ->
+                if(localDataSource.hasNoPopularMovies())
+                {
+                    val movies = remoteDataSource
+                        .refreshMovies(apiKey, regionRepository.findLastRegion(),
+                            sortBy, releaseDateGte, releaseDateLte)
 
-            val movies = remoteDataSource
-                .refreshMovies(apiKey, regionRepository.findLastRegion(), sortBy, sortYear)
+                    localDataSource.saveMovies(movies, isPopular)
+                }
 
-            localDataSource.saveMovies(movies, isPopular)
-       // }
+            false ->
+                if(localDataSource.hasNoNewMovies())
+                {
+                    val movies = remoteDataSource
+                        .refreshMovies(apiKey, regionRepository.findLastRegion(),
+                            sortBy, releaseDateGte, releaseDateLte)
+
+                    localDataSource.saveMovies(movies, isPopular)
+                }
+        }
 
         // Always return movies in DB as Single Source of Truth
         return if(isPopular) localDataSource.getAllPopularMovies()

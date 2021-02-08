@@ -3,7 +3,8 @@ package eu.javimar.data.source
 import eu.javimar.domain.Movie
 
 interface LocalDataSource {
-    suspend fun isEmpty(): Boolean
+    suspend fun hasNoPopularMovies(): Boolean
+    suspend fun hasNoNewMovies(): Boolean
     suspend fun saveMovies(movies: List<Movie>, isPopular: Boolean)
     suspend fun getAllPopularMovies(): List<Movie>
     suspend fun getAllYearMovies(): List<Movie>

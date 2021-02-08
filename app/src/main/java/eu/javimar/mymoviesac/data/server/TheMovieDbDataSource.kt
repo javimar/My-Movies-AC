@@ -7,11 +7,14 @@ import eu.javimar.mymoviesac.data.toDomainMovie
 class TheMovieDbDataSource : RemoteDataSource
 {
     override suspend fun refreshMovies(
-        apiKey: String, region: String,
-        sortBy: String, sortYear: String
+        apiKey: String,
+        region: String,
+        sortBy: String,
+        releaseDateGte: String,
+        releaseDateLte: String
     ): List<Movie> =
         MoviesApi.retrofitService
-            .listMoviesAsync(apiKey, region, sortBy, sortYear)
+            .listMoviesAsync(apiKey, region, sortBy, releaseDateGte, releaseDateLte)
             .results
             .map {
                 it.toDomainMovie()

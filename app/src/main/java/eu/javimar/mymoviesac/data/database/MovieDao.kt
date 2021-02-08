@@ -17,8 +17,11 @@ abstract class MovieDao
     @Query("SELECT * FROM Movie WHERE id = :id")
     abstract fun findMovieById(id: Int): Movie
 
-    @Query("SELECT COUNT(id) FROM Movie")
-    abstract fun movieCount(): Int
+    @Query("SELECT COUNT(id) FROM Movie WHERE isPopular = 1")
+    abstract fun moviePopularCount(): Int
+
+    @Query("SELECT COUNT(id) FROM Movie WHERE isPopular = 0")
+    abstract fun movieNewCount(): Int
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     abstract fun updateMovie(movie: Movie)
@@ -29,10 +32,10 @@ abstract class MovieDao
     @Transaction
     open fun insertPopularOrNewMovies(movies: List<Movie>, isPopular: Boolean)
     {
-        // If item was not inserted, it will return -1, then insert it
+        // If item was not inserted, it will return -1. CONFLICT STRATEGY IGNORE = Movie in DB
         val rowsIDs = insertMovies(movies)
         val moviesToUpdate = rowsIDs.mapIndexedNotNull { index, rowID ->
-            if(rowID == -1L) movies[index] else null
+            if(rowID == -1L) null else movies[index]
         }
         moviesToUpdate.forEach { movie ->
             updateIsPopular(movie.id, isPopular)

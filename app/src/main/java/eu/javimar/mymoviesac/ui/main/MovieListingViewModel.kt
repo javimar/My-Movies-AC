@@ -6,7 +6,8 @@ import eu.javimar.usecases.GetMovies
 import kotlinx.coroutines.launch
 
 class MovieListingViewModel(private var sortBy: String,
-                            private var year: String,
+                            private var releaseDateGte: String,
+                            private var releaseDateLte: String,
                             private var isPopular: Boolean,
                             private val refreshMovies: GetMovies) : ViewModel()
 {
@@ -32,10 +33,12 @@ class MovieListingViewModel(private var sortBy: String,
         _status.value = UIModel.RequestLocationPermission
     }
 
-    fun changeSortTypeAndYear(sort: String, year: String, isPopular: Boolean)
+    fun changeSortTypeAndYear(sort: String, releaseDateGte: String,
+                              releaseDateLte: String, isPopular: Boolean)
     {
         sortBy = sort
-        this.year = year
+        this.releaseDateGte = releaseDateGte
+        this.releaseDateLte = releaseDateLte
         this.isPopular = isPopular
         onCoarsePermissionRequested()
     }
@@ -46,7 +49,8 @@ class MovieListingViewModel(private var sortBy: String,
             _status.value = UIModel.Loading
             try
             {
-                _status.value = UIModel.Loaded(refreshMovies.invoke(sortBy, year, isPopular))
+                _status.value = UIModel.Loaded(refreshMovies
+                    .invoke(sortBy, releaseDateGte, releaseDateLte, isPopular))
             }
             catch (e: Exception)
             {

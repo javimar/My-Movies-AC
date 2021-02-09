@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/movieListFragmentPopular"
+        android:title="@string/title_popular_movies"
+        android:icon="@drawable/ic_popular" />
+    <item
+        android:id="@+id/movieListFragmentNewMovies"
+        android:title="@string/title_new_movies"
+        android:icon="@drawable/ic_nowplaying" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="@string/title_settings"
+        android:icon="@android:drawable/ic_menu_preferences" />
+
+</menu>

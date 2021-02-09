@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import eu.javimar.mymoviesac.R
 import eu.javimar.mymoviesac.databinding.FragmentMovieDetailBinding
+import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.scope.ScopeFragment
 import org.koin.core.parameter.parametersOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,6 +31,7 @@ class MovieDetailFragment: ScopeFragment()
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_movie_detail, container,false)
 
+        requireActivity().toolbar.visibility = View.GONE
         (activity as AppCompatActivity).setSupportActionBar(binding.movieDetailToolbar)
         NavigationUI.setupActionBarWithNavController((activity as AppCompatActivity), findNavController())
 

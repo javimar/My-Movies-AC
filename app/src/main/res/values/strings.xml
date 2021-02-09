@@ -3,6 +3,7 @@
 
     <string name="title_popular_movies">Most Popular</string>
     <string name="title_new_movies">Now Playing</string>
+    <string name="title_settings">Settings</string>
 
     <string name="action_popular_movies">Most Popular</string>
     <string name="action_new_movies">Now Playing</string>

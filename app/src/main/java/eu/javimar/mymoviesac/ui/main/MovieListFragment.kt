@@ -5,14 +5,15 @@ import android.os.Bundle
 import android.view.*
 import android.view.View.GONE
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import eu.javimar.mymoviesac.R
 import eu.javimar.mymoviesac.common.*
 import eu.javimar.mymoviesac.databinding.FragmentMovieListingBinding
 import eu.javimar.mymoviesac.ui.main.MovieListingViewModel.UIModel
+import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.scope.ScopeFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -41,11 +42,6 @@ class MovieListFragment: ScopeFragment()
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_movie_listing, container,false)
 
-        setHasOptionsMenu(true)
-        (activity as AppCompatActivity).setSupportActionBar(binding.mainBar.toolbar)
-        binding.mainBar.toolbar.setTitle(R.string.title_popular_movies)
-
-
         adapter = MovieAdapter(MovieAdapter.MovieClickListener {
             viewModel.onMovieClicked(it)
         })
@@ -58,9 +54,10 @@ class MovieListFragment: ScopeFragment()
 
         viewModel.status.observe(viewLifecycleOwner, Observer(::updateUi))
 
+        requireActivity().toolbar.visibility = View.VISIBLE
+
         return binding.root
     }
-
 
     private fun updateUi(status: UIModel)
     {
@@ -82,6 +79,7 @@ class MovieListFragment: ScopeFragment()
             // First entry point when accepting permission
             is UIModel.RequestLocationPermission -> coarsePermissionRequester.request {
                 viewModel.onCoarsePermissionRequested()
+                setTabListener()
             }
             is UIModel.Error -> {
                 if(requireActivity().isConnected)
@@ -97,35 +95,21 @@ class MovieListFragment: ScopeFragment()
         }
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
+    private fun setTabListener()
     {
-        inflater.inflate(R.menu.menu_main, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean
-    {
-        return when (item.itemId)
-        {
-            R.id.action_popular -> {
-                binding.mainBar.toolbar.setTitle(R.string.title_popular_movies)
-                // Navigate to most popular
-                isPopular = true
-                viewModel.showMovies(isPopular)
-                true
+        val navController = requireActivity().findNavController(R.id.nav_host_fragment)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id)
+            {
+                R.id.movieListFragmentPopular -> {
+                    isPopular = true
+                    viewModel.showMovies(isPopular)
+                }
+                R.id.movieListFragmentNewMovies -> {
+                    isPopular = false
+                    viewModel.showMovies(isPopular)
+                }
             }
-            R.id.action_new -> {
-                // Navigate to new movies playing
-                isPopular = false
-                binding.mainBar.toolbar.title = getString(R.string.title_new_movies)
-                viewModel.showMovies(isPopular)
-                true
-            }
-            R.id.action_settings -> {
-                findNavController().navigate(R.id.open_settings_fragment)
-                true
-            }
-            else -> true
         }
     }
 

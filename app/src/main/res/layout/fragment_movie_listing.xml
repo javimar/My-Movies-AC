@@ -12,20 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/Widget.MaterialComponents.Toolbar"
-            app:statusBarForeground="?attr/colorPrimaryDark">
-
-            <include
-                android:id="@+id/mainBar"
-                layout="@layout/toolbar" />
-
-        </com.google.android.material.appbar.AppBarLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_movies"
             android:layout_width="match_parent"

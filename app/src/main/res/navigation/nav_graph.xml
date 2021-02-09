@@ -2,11 +2,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/movieListFragment">
+    app:startDestination="@id/movieListFragmentPopular">
 
     <fragment
-        android:id="@+id/movieListFragment"
+        android:id="@+id/movieListFragmentPopular"
         android:name="eu.javimar.mymoviesac.ui.main.MovieListFragment"
+        android:label="@string/title_popular_movies"
+        tools:layout="@layout/fragment_movie_listing">
+        <action
+            android:id="@+id/action_movieListFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment"
+            app:enterAnim="@anim/translate_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/translate_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieListFragmentNewMovies"
+        android:name="eu.javimar.mymoviesac.ui.main.MovieListFragment"
+        android:label="@string/title_new_movies"
         tools:layout="@layout/fragment_movie_listing">
         <action
             android:id="@+id/action_movieListFragment_to_movieDetailFragment"
@@ -33,9 +48,5 @@
         android:name="eu.javimar.mymoviesac.ui.settings.Settings"
         android:label="Settings" />
 
-    <!--Global action-->
-    <action
-        android:id="@+id/open_settings_fragment"
-        app:destination="@id/settingsFragment"/>
 
 </navigation>

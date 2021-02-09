@@ -130,6 +130,6 @@ class MovieListFragment: ScopeFragment()
     }
 
     companion object {
-        private const val SORT_BY_POPULARITY = "popularity.desc"
+        const val SORT_BY_POPULARITY = "popularity.desc"
     }
 }

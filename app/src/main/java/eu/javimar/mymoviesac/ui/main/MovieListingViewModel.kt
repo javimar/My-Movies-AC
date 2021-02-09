@@ -33,12 +33,8 @@ class MovieListingViewModel(private var sortBy: String,
         _status.value = UIModel.RequestLocationPermission
     }
 
-    fun changeSortTypeAndYear(sort: String, releaseDateGte: String,
-                              releaseDateLte: String, isPopular: Boolean)
+    fun showMovies(isPopular: Boolean)
     {
-        sortBy = sort
-        this.releaseDateGte = releaseDateGte
-        this.releaseDateLte = releaseDateLte
         this.isPopular = isPopular
         onCoarsePermissionRequested()
     }

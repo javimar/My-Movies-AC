@@ -22,13 +22,13 @@ class MovieListFragment: ScopeFragment()
 {
     private val releaseDateGte = getOneMonthBefore()
     private val releaseDateLte = getTodayFormattedForQuery(LocalDate.now())
-    private var sortBy = SORT_BY_POPULARITY
+    private val sortBy = SORT_BY_POPULARITY
     private var isPopular = true
 
     private lateinit var adapter: MovieAdapter
 
     private val viewModel: MovieListingViewModel by viewModel {
-        parametersOf(sortBy, "", "", isPopular)
+        parametersOf(sortBy, releaseDateGte, releaseDateLte, isPopular)
     }
     private val coarsePermissionRequester by lazy {
         PermissionRequester(requireActivity(), ACCESS_COARSE_LOCATION)
@@ -110,17 +110,15 @@ class MovieListFragment: ScopeFragment()
             R.id.action_popular -> {
                 binding.mainBar.toolbar.setTitle(R.string.title_popular_movies)
                 // Navigate to most popular
-                sortBy = SORT_BY_POPULARITY
                 isPopular = true
-                viewModel.changeSortTypeAndYear(sortBy, "", "", isPopular)
+                viewModel.showMovies(isPopular)
                 true
             }
             R.id.action_new -> {
                 // Navigate to new movies playing
-                sortBy = ""
                 isPopular = false
                 binding.mainBar.toolbar.title = getString(R.string.title_new_movies)
-                viewModel.changeSortTypeAndYear(sortBy, releaseDateGte, releaseDateLte, isPopular)
+                viewModel.showMovies(isPopular)
                 true
             }
             R.id.action_settings -> {
@@ -132,7 +130,6 @@ class MovieListFragment: ScopeFragment()
     }
 
     companion object {
-        //private const val SORT_BY_YEAR = "release_date.desc"
         private const val SORT_BY_POPULARITY = "popularity.desc"
     }
 }

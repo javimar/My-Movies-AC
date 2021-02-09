@@ -17,11 +17,8 @@ abstract class MovieDao
     @Query("SELECT * FROM Movie WHERE id = :id")
     abstract fun findMovieById(id: Int): Movie
 
-    @Query("SELECT COUNT(id) FROM Movie WHERE isPopular = 1")
-    abstract fun moviePopularCount(): Int
-
-    @Query("SELECT COUNT(id) FROM Movie WHERE isPopular = 0")
-    abstract fun movieNewCount(): Int
+    @Query("SELECT COUNT(id) FROM Movie")
+    abstract fun movieCount(): Int
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     abstract fun updateMovie(movie: Movie)

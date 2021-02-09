@@ -15,27 +15,10 @@ class MoviesRepository(
                               releaseDateLte: String,
                               isPopular: Boolean): List<Movie>
     {
-        when (isPopular)
+        // Only load the first time. The rest is done in the background
+        if(localDataSource.isEmpty())
         {
-            true ->
-                if(localDataSource.hasNoPopularMovies())
-                {
-                    val movies = remoteDataSource
-                        .refreshMovies(apiKey, regionRepository.findLastRegion(),
-                            sortBy, releaseDateGte, releaseDateLte)
-
-                    localDataSource.saveMovies(movies, isPopular)
-                }
-
-            false ->
-                if(localDataSource.hasNoNewMovies())
-                {
-                    val movies = remoteDataSource
-                        .refreshMovies(apiKey, regionRepository.findLastRegion(),
-                            sortBy, releaseDateGte, releaseDateLte)
-
-                    localDataSource.saveMovies(movies, isPopular)
-                }
+            callApiForMovies(sortBy, releaseDateGte, releaseDateLte)
         }
 
         // Always return movies in DB as Single Source of Truth
@@ -43,16 +26,19 @@ class MoviesRepository(
         else localDataSource.getAllYearMovies()
     }
 
+    // Called only by the WorkManager
+    suspend fun reloadMoviesInBackground(sortBy: String, releaseDateGte: String, releaseDateLte: String)
+    {
+        localDataSource.deleteMovies()
+        callApiForMovies(sortBy, releaseDateGte, releaseDateLte)
+    }
+
     suspend fun findMovieById(id: Int): Movie = localDataSource.findMovieById(id)
 
     suspend fun updateMovie(movie: Movie) = localDataSource.updateMovie(movie)
-
-    suspend fun reloadMovies(sortBy: String,
-                              releaseDateGte: String,
-                              releaseDateLte: String)
+    
+    private suspend fun callApiForMovies(sortBy: String, releaseDateGte: String, releaseDateLte: String)
     {
-        localDataSource.deleteMovies()
-
         var movies = remoteDataSource
             .refreshMovies(apiKey, regionRepository.findLastRegion(),
                 sortBy, "", "")

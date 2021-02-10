@@ -78,7 +78,6 @@ class MovieListFragment: ScopeFragment()
 
             // First entry point when accepting permission
             is UIModel.RequestLocationPermission -> coarsePermissionRequester.request {
-                viewModel.onCoarsePermissionRequested()
                 setTabListener()
             }
             is UIModel.Error -> {

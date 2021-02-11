@@ -3,22 +3,18 @@ package eu.javimar.mymoviesac.background
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import eu.javimar.mymoviesac.common.getOneMonthBefore
-import eu.javimar.mymoviesac.common.getTodayFormattedForQuery
 import eu.javimar.mymoviesac.ui.main.MovieListFragment
 import eu.javimar.usecases.ReloadMoviesFromServer
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import retrofit2.HttpException
-import java.time.LocalDate
+
 
 @KoinApiExtension
 class RefreshDataWork(appContext: Context, params: WorkerParameters):
     CoroutineWorker(appContext, params), KoinComponent
 {
-    private val releaseDateGte = getOneMonthBefore()
-    private val releaseDateLte = getTodayFormattedForQuery(LocalDate.now())
     private val sortBy = MovieListFragment.SORT_BY_POPULARITY
 
     override suspend fun doWork(): Result
@@ -26,7 +22,7 @@ class RefreshDataWork(appContext: Context, params: WorkerParameters):
         val getMovies: ReloadMoviesFromServer by inject()
 
         return try {
-            getMovies.invoke(sortBy, releaseDateGte, releaseDateLte)
+            getMovies.invoke(sortBy)
             Result.success()
         } catch (exception: HttpException) {
             Result.retry()

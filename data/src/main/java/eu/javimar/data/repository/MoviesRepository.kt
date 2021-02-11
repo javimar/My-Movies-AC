@@ -8,17 +8,17 @@ class MoviesRepository(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,
     private val regionRepository: RegionRepository,
-    private val apiKey: String)
+    private val apiKey: String,
+    private val releaseDateGte: String,
+    private val releaseDateLte: String)
 {
     suspend fun refreshMovies(sortBy: String,
-                              releaseDateGte: String,
-                              releaseDateLte: String,
                               isPopular: Boolean): List<Movie>
     {
         // Only load the first time. The rest is done in the background
         if(localDataSource.isEmpty())
         {
-            callApiForMovies(sortBy, releaseDateGte, releaseDateLte)
+            callApiForMovies(sortBy)
         }
 
         // Always return movies in DB as Single Source of Truth
@@ -27,17 +27,17 @@ class MoviesRepository(
     }
 
     // Called only by the WorkManager
-    suspend fun reloadMoviesInBackground(sortBy: String, releaseDateGte: String, releaseDateLte: String)
+    suspend fun reloadMoviesInBackground(sortBy: String)
     {
         localDataSource.deleteMovies()
-        callApiForMovies(sortBy, releaseDateGte, releaseDateLte)
+        callApiForMovies(sortBy)
     }
 
     suspend fun findMovieById(id: Int): Movie = localDataSource.findMovieById(id)
 
     suspend fun updateMovie(movie: Movie) = localDataSource.updateMovie(movie)
     
-    private suspend fun callApiForMovies(sortBy: String, releaseDateGte: String, releaseDateLte: String)
+    private suspend fun callApiForMovies(sortBy: String)
     {
         var movies = remoteDataSource
             .refreshMovies(apiKey, regionRepository.findLastRegion(),

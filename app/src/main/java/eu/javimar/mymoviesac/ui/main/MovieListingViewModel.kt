@@ -6,8 +6,6 @@ import eu.javimar.usecases.GetMovies
 import kotlinx.coroutines.launch
 
 class MovieListingViewModel(private var sortBy: String,
-                            private var releaseDateGte: String,
-                            private var releaseDateLte: String,
                             private var isPopular: Boolean,
                             private val refreshMovies: GetMovies) : ViewModel()
 {
@@ -46,7 +44,7 @@ class MovieListingViewModel(private var sortBy: String,
             try
             {
                 _status.value = UIModel.Loaded(refreshMovies
-                    .invoke(sortBy, releaseDateGte, releaseDateLte, isPopular))
+                    .invoke(sortBy, isPopular))
             }
             catch (e: Exception)
             {

@@ -17,19 +17,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.scope.ScopeFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.time.LocalDate
 
 class MovieListFragment: ScopeFragment()
 {
-    private val releaseDateGte = getOneMonthBefore()
-    private val releaseDateLte = getTodayFormattedForQuery(LocalDate.now())
     private val sortBy = SORT_BY_POPULARITY
     private var isPopular = true
 
     private lateinit var adapter: MovieAdapter
 
     private val viewModel: MovieListingViewModel by viewModel {
-        parametersOf(sortBy, releaseDateGte, releaseDateLte, isPopular)
+        parametersOf(sortBy, isPopular)
     }
     private val coarsePermissionRequester by lazy {
         PermissionRequester(requireActivity(), ACCESS_COARSE_LOCATION)

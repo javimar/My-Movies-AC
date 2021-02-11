@@ -27,7 +27,7 @@
             android:key="@string/pref_language_key"
             android:title="@string/pref_language_title"
             android:summary="%s"
-            android:defaultValue="SPANISH"
+            android:defaultValue="@string/spanishLang"
             android:entries="@array/languageValuesEntries"
             android:entryValues="@array/languageValues" />
 

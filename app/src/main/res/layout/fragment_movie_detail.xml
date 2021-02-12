@@ -84,28 +84,32 @@
 
                     <TextView
                         android:id="@+id/tv_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="32dp"
+                        android:layout_marginEnd="16dp"
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:text="@{viewmodel.selectedMovie.title}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/placePoster"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Casablanca" />
 
                     <TextView
                         android:id="@+id/tv_ori_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:text="@{viewmodel.selectedMovie.originalTitle}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/placePoster"
                         app:layout_constraintTop_toBottomOf="@+id/tv_title"
                         tools:text="Casablanca Other" />
@@ -152,7 +156,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="32dp"
                         android:layout_marginEnd="16dp"
                         android:lineSpacingMultiplier="@dimen/line_spacing_value"
                         android:text="@{viewmodel.selectedMovie.overview}"
@@ -160,7 +164,7 @@
                         android:textColor="?attr/colorOnSecondary"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/placePoster"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_rating"
                         tools:text="Synopsis, blahblahblabla" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,10 +21,15 @@
             android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/swimmer_collapsing_bar"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                android:layout_height="330dp"
+                app:titleEnabled="false"
+                android:fitsSystemWindows="true"
+                app:contentScrim="@color/colorPrimaryDark"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:scrimAnimationDuration="1000"
+                app:scrimVisibleHeightTrigger="220dp">
 
                 <ImageView
                     android:id="@+id/movieDetailImage"
@@ -37,13 +42,20 @@
                     tools:src="@mipmap/ic_launcher"
                     tools:ignore="ContentDescription" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="330dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/scrim"/>
+
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/movieDetailToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
-                    app:titleTextAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                    app:titleTextColor="@android:color/white"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    android:theme="@style/ToolbarTheme"
                     app:title="@{viewmodel.selectedMovie.title}" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -55,113 +67,105 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
-                android:id="@+id/movieTrailerContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:paddingTop="16dp"
-                android:orientation="vertical">
-
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clipChildren="false" >
+                    android:clipChildren="false">
 
                     <ImageView
                         android:id="@+id/placePoster"
                         android:layout_width="110dp"
                         android:layout_height="160dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="32dp"
                         app:imageUrl="@{viewmodel.selectedMovie.posterPath}"
-                        android:layout_marginTop="16dp" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_toEndOf="@id/placePoster"
+                        android:layout_marginTop="32dp"
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:text="@{viewmodel.selectedMovie.title}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        app:layout_constraintStart_toEndOf="@+id/placePoster"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="Casablanca" />
 
                     <TextView
                         android:id="@+id/tv_ori_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_title"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_toEndOf="@id/placePoster"
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:text="@{viewmodel.selectedMovie.originalTitle}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        app:layout_constraintStart_toEndOf="@+id/placePoster"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_title"
                         tools:text="Casablanca Other" />
 
                     <TextView
                         android:id="@+id/tv_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_ori_title"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_toEndOf="@id/placePoster"
-                        app:formatDate="@{viewmodel.selectedMovie.releaseDate}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        tools:text="1969" />
-
-                    <LinearLayout
-                        android:id="@+id/rating_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_date"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:layout_toEndOf="@id/placePoster"
-                        android:clipChildren="false"
-                        android:gravity="bottom"
-                        android:orientation="horizontal">
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        app:formatDate="@{viewmodel.selectedMovie.releaseDate}"
+                        app:layout_constraintStart_toEndOf="@+id/placePoster"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_ori_title"
+                        tools:text="1969" />
 
-                        <TextView
-                            android:id="@+id/tv_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                            android:textColor="?attr/colorPrimary"
-                            android:text="@{String.valueOf(viewmodel.selectedMovie.voteAverage)}"
-                            tools:text="6.9" />
+                    <TextView
+                        android:id="@+id/tv_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@{String.valueOf(viewmodel.selectedMovie.voteAverage)}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                        android:textColor="?attr/colorPrimary"
+                        app:layout_constraintStart_toEndOf="@+id/placePoster"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_date"
+                        tools:text="6.9" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/detail_ratings_literal_10"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="32dp"
+                        android:text="@string/detail_ratings_literal_10"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        app:layout_constraintStart_toEndOf="@+id/tv_rating"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
                     <TextView
                         android:id="@+id/tv_synopsis"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/placePoster"
-                        android:layout_centerHorizontal="true"
-                        android:layout_margin="16dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="16dp"
                         android:lineSpacingMultiplier="@dimen/line_spacing_value"
+                        android:text="@{viewmodel.selectedMovie.overview}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="?attr/colorOnSecondary"
-                        android:text="@{viewmodel.selectedMovie.overview}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/placePoster"
                         tools:text="Synopsis, blahblahblabla" />
 
-                </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </LinearLayout>
+
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

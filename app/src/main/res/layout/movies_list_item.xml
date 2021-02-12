@@ -46,7 +46,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:background="@color/teal_700"
+                android:background="@color/azulito"
                 android:text="@{movie.title}"
                 android:padding="8dp"
                 android:lines="2"

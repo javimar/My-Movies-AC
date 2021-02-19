@@ -42,7 +42,7 @@ fun TextView.formatDate(date: String?)
 {
     date?.let {
         val d = LocalDate.parse(it)
-        val formatter = DateTimeFormatter.ofPattern("dd-MMMM-yyyy")
+        val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
         text = d.format(formatter)
     }
 }

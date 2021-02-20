@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 
 class MovieListingViewModel(private var sortBy: String,
                             private var isPopular: Boolean,
+                            private var prefChange: Boolean,
                             private val refreshMovies: GetMovies) : ViewModel()
 {
     private val _status = MutableLiveData<UIModel>()
@@ -31,20 +32,21 @@ class MovieListingViewModel(private var sortBy: String,
         _status.value = UIModel.RequestLocationPermission
     }
 
-    fun showMovies(isPopular: Boolean)
+    fun showMovies(isPopular: Boolean, prefChange: Boolean)
     {
         this.isPopular = isPopular
+        this.prefChange = prefChange
         onCoarsePermissionRequested()
     }
 
-    fun onCoarsePermissionRequested()
+    private fun onCoarsePermissionRequested()
     {
         viewModelScope.launch {
             _status.value = UIModel.Loading
             try
             {
                 _status.value = UIModel.Loaded(refreshMovies
-                    .invoke(sortBy, isPopular))
+                    .invoke(sortBy, isPopular, prefChange))
             }
             catch (e: Exception)
             {

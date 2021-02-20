@@ -8,13 +8,14 @@ class TheMovieDbDataSource : RemoteDataSource
 {
     override suspend fun refreshMovies(
         apiKey: String,
+        language: String,
         region: String,
         sortBy: String,
         releaseDateGte: String,
         releaseDateLte: String
     ): List<Movie> =
         MoviesApi.retrofitService
-            .listMoviesAsync(apiKey, region, sortBy, releaseDateGte, releaseDateLte)
+            .listMoviesAsync(apiKey, language, region, sortBy, releaseDateGte, releaseDateLte)
             .results
             .map {
                 it.toDomainMovie()

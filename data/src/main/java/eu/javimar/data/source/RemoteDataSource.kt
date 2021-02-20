@@ -6,6 +6,7 @@ import eu.javimar.domain.Movie
 interface RemoteDataSource {
     suspend fun refreshMovies(
         apiKey: String,
+        language: String,
         region: String,
         sortBy: String,
         releaseDateGte: String,

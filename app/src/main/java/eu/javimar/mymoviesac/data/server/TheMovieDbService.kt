@@ -43,6 +43,7 @@ interface TheMovieDbService
     @GET("discover/movie")
     suspend fun listMoviesAsync(
         @Query("api_key") apiKey: String,
+        @Query("language") language: String,
         @Query("region") region: String,
         @Query("sort_by") sortBy: String,
         @Query("primary_release_date.gte") releaseDateGte: String,

@@ -66,8 +66,8 @@ dependencies {
 
     // ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.3.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
 
     // Background
     implementation 'androidx.work:work-runtime-ktx:2.5.0'
@@ -111,4 +111,7 @@ dependencies {
 
     //Toasty
     implementation 'com.github.GrenderG:Toasty:1.5.0'
+
+    // Live preferences
+    implementation 'com.github.ibrahimsn98:live-preferences:1.9'
 }

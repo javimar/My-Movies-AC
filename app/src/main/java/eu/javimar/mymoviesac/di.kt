@@ -1,8 +1,10 @@
 package eu.javimar.mymoviesac
 
 import android.app.Application
+import eu.javimar.data.repository.InternalRepository
 import eu.javimar.data.repository.MoviesRepository
 import eu.javimar.data.repository.RegionRepository
+import eu.javimar.data.source.InternalDataSource
 import eu.javimar.data.source.LocalDataSource
 import eu.javimar.data.source.LocationDataSource
 import eu.javimar.data.source.RemoteDataSource
@@ -12,6 +14,7 @@ import eu.javimar.mymoviesac.data.AndroidPermissionChecker
 import eu.javimar.mymoviesac.data.PlayServicesLocationDataSource
 import eu.javimar.mymoviesac.data.database.MovieDatabase
 import eu.javimar.mymoviesac.data.database.RoomDataSource
+import eu.javimar.mymoviesac.data.preferences.PreferenceDataSource
 import eu.javimar.mymoviesac.data.server.TheMovieDbDataSource
 import eu.javimar.mymoviesac.ui.detail.MovieDetailFragment
 import eu.javimar.mymoviesac.ui.detail.MovieDetailViewModel
@@ -19,6 +22,7 @@ import eu.javimar.mymoviesac.ui.main.MovieListFragment
 import eu.javimar.mymoviesac.ui.main.MovieListingViewModel
 import eu.javimar.usecases.FindMovieById
 import eu.javimar.usecases.GetMovies
+import eu.javimar.usecases.ReloadMoviesFromServer
 import eu.javimar.usecases.ToggleMovieFavorite
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -41,13 +45,11 @@ fun Application.initDI()
 
 private val appModule = module {
     single(named("API_KEY")) { androidApplication().getString(R.string.API_KEY) }
-
     single(named("releaseDateGte")) { getOneMonthBefore() }
     single(named("releaseDateLte")) { getTodayFormattedForQuery(LocalDate.now()) }
-
-
     single { MovieDatabase.buildDatabase(get()) }
     factory<LocalDataSource> { RoomDataSource(get()) }
+    factory<InternalDataSource> { PreferenceDataSource(get()) }
     factory<RemoteDataSource> { TheMovieDbDataSource() }
     factory<LocationDataSource> { PlayServicesLocationDataSource(get()) }
     factory<RegionRepository.PermissionChecker> { AndroidPermissionChecker(get()) }
@@ -55,8 +57,9 @@ private val appModule = module {
 
 private val dataModule = module {
     factory { RegionRepository(get(), get()) }
+    factory { InternalRepository(get()) }
     factory { MoviesRepository(
-        get(), get(), get(),
+        get(), get(), get(), get(),
         get(named("API_KEY")),
         get(named("releaseDateGte")),
         get(named("releaseDateLte")))
@@ -67,8 +70,9 @@ private val scopesModule = module {
     scope(named<MovieListFragment>()) {
         viewModel { (
                         sortBy: String,
-                        isPopular: Boolean) ->
-            MovieListingViewModel(sortBy, isPopular, get()) }
+                        isPopular: Boolean,
+                        prefChange: Boolean) ->
+            MovieListingViewModel(sortBy, isPopular, prefChange, get()) }
         scoped { GetMovies(get()) }
     }
 
@@ -77,4 +81,5 @@ private val scopesModule = module {
         scoped { FindMovieById(get()) }
         scoped { ToggleMovieFavorite(get()) }
     }
+    factory { ReloadMoviesFromServer(get()) }
 }

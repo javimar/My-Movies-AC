@@ -8,18 +8,21 @@ class MoviesRepository(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,
     private val regionRepository: RegionRepository,
+    private val internalRepository: InternalRepository,
     private val apiKey: String,
     private val releaseDateGte: String,
     private val releaseDateLte: String)
 {
     suspend fun refreshMovies(sortBy: String,
-                              isPopular: Boolean): List<Movie>
+                              isPopular: Boolean,
+                              prefChange: Boolean): List<Movie>
     {
         // Only load the first time. The rest is done in the background
         if(localDataSource.isEmpty())
         {
             callApiForMovies(sortBy)
         }
+        //else if(prefChange) reloadMoviesInBackground(sortBy)
 
         // Always return movies in DB as Single Source of Truth
         return if(isPopular) localDataSource.getAllPopularMovies()
@@ -40,13 +43,21 @@ class MoviesRepository(
     private suspend fun callApiForMovies(sortBy: String)
     {
         var movies = remoteDataSource
-            .refreshMovies(apiKey, regionRepository.findLastRegion(),
-                sortBy, "", "")
+            .refreshMovies(apiKey,
+                internalRepository.getLanguage(),
+                regionRepository.findLastRegion(),
+                sortBy,
+                "",
+                "")
         localDataSource.saveMovies(movies, true)
 
         movies = remoteDataSource
-            .refreshMovies(apiKey, regionRepository.findLastRegion(),
-                sortBy, releaseDateGte, releaseDateLte)
+            .refreshMovies(apiKey,
+                internalRepository.getLanguage(),
+                regionRepository.findLastRegion(),
+                sortBy,
+                releaseDateGte,
+                releaseDateLte)
         localDataSource.saveMovies(movies, false)
     }
 }

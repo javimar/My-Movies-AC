@@ -17,21 +17,10 @@
     <string name="spanishLang">Spanish</string>
     <string name="engLang">English</string>
 
-    <string name="pref_movie_settings">Movie Settings</string>
-
-    <string name="pref_dev_location_key" translatable="false">USE DEVICE LOCATION</string>
-    <string name="pref_dev_location_title">Use device location</string>
-    <string name="pref_dev_location_summary">Allow the app to get the location</string>
-
-    <string name="pref_custom_location_key" translatable="false">CUSTOM LOCATION</string>
-    <string name="pref_custom_location_title">Location</string>
-    <string name="pref_custom_location_summary">The location for the movies</string>
-
+    <string name="pref_movie_language_settings">Language Settings</string>
     <string name="pref_language_key" translatable="false">LANGUAGE</string>
     <string name="pref_language_title">Language for Movie listing</string>
     <string name="pref_language_summary">%s</string>
-
-    <string name="locationMadrid">Madrid</string>
 
 
     <!-- ERROR STRINGS -->

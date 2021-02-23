@@ -1,8 +1,8 @@
-package eu.javimar.mymoviesac.usecases
+package eu.javimar.testshared
 
 import eu.javimar.domain.Movie
 
-internal val mockedMovie = Movie(
+val mockedMovie = Movie(
     0,
     "Casablanca",
     "La pelicula va de bla bla",

@@ -2,17 +2,16 @@ package eu.javimar.mymoviesac
 
 import com.nhaarman.mockitokotlin2.verify
 import eu.javimar.data.repository.MoviesRepository
-import eu.javimar.mymoviesac.usecases.mockedMovie
+import eu.javimar.testshared.mockedMovie
 import eu.javimar.usecases.ToggleMovieFavorite
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
+import junit.framework.TestCase.assertFalse
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-
 
 @RunWith(MockitoJUnitRunner::class)
 class ToggleMovieTest {

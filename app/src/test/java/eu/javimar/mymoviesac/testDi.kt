@@ -24,7 +24,7 @@ fun initMockedDi(vararg modules: Module) {
 }
 
 private val mockedAppModule = module {
-    single(named("apiKey")) { "123456" }
+    single(named("API_KEY")) { "123456" }
     single(named("releaseDateGte")) { getOneMonthBefore() }
     single(named("releaseDateLte")) { getTodayFormattedForQuery(LocalDate.now()) }
     single<LocalDataSource> { FakeLocalDataSource() }

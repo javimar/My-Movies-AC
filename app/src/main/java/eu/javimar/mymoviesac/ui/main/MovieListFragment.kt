@@ -26,12 +26,11 @@ class MovieListFragment: ScopeFragment()
 {
     private val sortBy = SORT_BY_POPULARITY
     private var isPopular = true
-    private var prefChange = false
 
     private lateinit var adapter: MovieAdapter
 
     private val viewModel: MovieListingViewModel by viewModel {
-        parametersOf(sortBy, isPopular, prefChange)
+        parametersOf(sortBy, isPopular)
     }
     private val coarsePermissionRequester by lazy {
         PermissionRequester(requireActivity(), ACCESS_COARSE_LOCATION)
@@ -103,7 +102,7 @@ class MovieListFragment: ScopeFragment()
         val liveSharedPreferences = LiveSharedPreferences(preferences)
         liveSharedPreferences.getString(getString(R.string.pref_language_key), getString(R.string.engLang))
             .observe(this, {
-                prefChange = true
+                // TODO manage live pref change
             })
     }
 
@@ -115,11 +114,11 @@ class MovieListFragment: ScopeFragment()
             {
                 R.id.movieListFragmentPopular -> {
                     isPopular = true
-                    viewModel.showMovies(isPopular, prefChange)
+                    viewModel.showMovies(isPopular)
                 }
                 R.id.movieListFragmentNewMovies -> {
                     isPopular = false
-                    viewModel.showMovies(isPopular, prefChange)
+                    viewModel.showMovies(isPopular)
                 }
             }
         }

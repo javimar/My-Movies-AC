@@ -55,7 +55,7 @@ private val appModule = module {
     factory<RegionRepository.PermissionChecker> { AndroidPermissionChecker(get()) }
 }
 
-private val dataModule = module {
+val dataModule = module {
     factory { RegionRepository(get(), get()) }
     factory { InternalRepository(get()) }
     factory { MoviesRepository(
@@ -70,9 +70,8 @@ private val scopesModule = module {
     scope(named<MovieListFragment>()) {
         viewModel { (
                         sortBy: String,
-                        isPopular: Boolean,
-                        prefChange: Boolean) ->
-            MovieListingViewModel(sortBy, isPopular, prefChange, get()) }
+                        isPopular: Boolean) ->
+            MovieListingViewModel(sortBy, isPopular, get()) }
         scoped { GetMovies(get()) }
     }
 

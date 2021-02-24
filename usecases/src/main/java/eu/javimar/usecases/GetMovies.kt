@@ -6,7 +6,6 @@ import eu.javimar.domain.Movie
 class GetMovies(private val moviesRepository: MoviesRepository)
 {
     suspend fun invoke(sortBy: String,
-                       isPopular: Boolean,
-                       prefChange: Boolean): List<Movie> =
-        moviesRepository.refreshMovies(sortBy, isPopular, prefChange)
+                       isPopular: Boolean): List<Movie> =
+        moviesRepository.refreshMovies(sortBy, isPopular)
 }

@@ -14,15 +14,13 @@ class MoviesRepository(
     private val releaseDateLte: String)
 {
     suspend fun refreshMovies(sortBy: String,
-                              isPopular: Boolean,
-                              prefChange: Boolean): List<Movie>
+                              isPopular: Boolean): List<Movie>
     {
         // Only load the first time. The rest is done in the background
         if(localDataSource.isEmpty())
         {
             callApiForMovies(sortBy)
         }
-        //else if(prefChange) reloadMoviesInBackground(sortBy)
 
         // Always return movies in DB as Single Source of Truth
         return if(isPopular) localDataSource.getAllPopularMovies()

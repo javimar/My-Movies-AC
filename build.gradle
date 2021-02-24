@@ -32,7 +32,8 @@ allprojects {
         ]
 
         androidxTestLibs = [
-                archCoreTesting: 'androidx.arch.core:core-testing:2.1.0'
+                archCoreTesting : 'androidx.arch.core:core-testing:2.1.0',
+                work            : 'androidx.work:work-testing:2.5.0-beta02'
         ]
 
         androidTestLibs = [

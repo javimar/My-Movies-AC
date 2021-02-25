@@ -4,7 +4,7 @@ import eu.javimar.data.source.RemoteDataSource
 import eu.javimar.domain.Movie
 import eu.javimar.mymoviesac.data.toDomainMovie
 
-class TheMovieDbDataSource : RemoteDataSource
+class TheMovieDbDataSource(private val theMovieDb: TheMovieDb) : RemoteDataSource
 {
     override suspend fun refreshMovies(
         apiKey: String,
@@ -14,7 +14,7 @@ class TheMovieDbDataSource : RemoteDataSource
         releaseDateGte: String,
         releaseDateLte: String
     ): List<Movie> =
-        MoviesApi.retrofitService
+        theMovieDb.retrofitService
             .listMoviesAsync(apiKey, language, region, sortBy, releaseDateGte, releaseDateLte)
             .results
             .map {

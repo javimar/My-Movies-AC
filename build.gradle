@@ -28,7 +28,7 @@ allprojects {
         ]
 
         kotlinCoroutinesLibs = [
-                kotlinCoroutines    : 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
+                kotlinCoroutines: 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
         ]
 
         androidxTestLibs = [
@@ -36,9 +36,14 @@ allprojects {
         ]
 
         androidTestLibs = [
-                testRunner  : 'androidx.test:runner:1.3.0',
-                espresso    : 'androidx.test.espresso:espresso-core:3.3.0',
-                work        : 'androidx.work:work-testing:2.4.0'
+                testRunner          : 'androidx.test:runner:1.3.0',
+                espresso            : 'androidx.test.espresso:espresso-contrib:3.3.0',
+                rules               : 'androidx.test:rules:1.3.0',
+                koinTest            : 'org.koin:koin-test:2.2.2',
+                extJunit            : 'androidx.test.ext:junit-ktx:1.1.2',
+                okhttpIdling        : 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0',
+                mockWebServer       : 'com.squareup.okhttp3:mockwebserver:4.9.0',
+                work                : 'androidx.work:work-testing:2.4.0'
         ]
     }
 }

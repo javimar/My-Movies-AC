@@ -15,6 +15,7 @@ import eu.javimar.mymoviesac.data.PlayServicesLocationDataSource
 import eu.javimar.mymoviesac.data.database.MovieDatabase
 import eu.javimar.mymoviesac.data.database.RoomDataSource
 import eu.javimar.mymoviesac.data.preferences.PreferenceDataSource
+import eu.javimar.mymoviesac.data.server.TheMovieDb
 import eu.javimar.mymoviesac.data.server.TheMovieDbDataSource
 import eu.javimar.mymoviesac.ui.detail.MovieDetailFragment
 import eu.javimar.mymoviesac.ui.detail.MovieDetailViewModel
@@ -50,9 +51,11 @@ private val appModule = module {
     single { MovieDatabase.buildDatabase(get()) }
     factory<LocalDataSource> { RoomDataSource(get()) }
     factory<InternalDataSource> { PreferenceDataSource(get()) }
-    factory<RemoteDataSource> { TheMovieDbDataSource() }
+    factory<RemoteDataSource> { TheMovieDbDataSource(get()) }
     factory<LocationDataSource> { PlayServicesLocationDataSource(get()) }
     factory<RegionRepository.PermissionChecker> { AndroidPermissionChecker(get()) }
+    single(named("baseUrl")) { "https://api.themoviedb.org/3/" }
+    single { TheMovieDb(get(named("baseUrl"))) }
 }
 
 val dataModule = module {

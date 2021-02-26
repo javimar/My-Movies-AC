@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity()
             setOf(
                 R.id.movieListFragmentPopular,
                 R.id.movieListFragmentNewMovies,
+                R.id.movieListFragmentFavs,
                 R.id.settingsFragment
             )
         )

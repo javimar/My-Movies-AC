@@ -10,6 +10,12 @@
         android:id="@+id/movieListFragmentNewMovies"
         android:title="@string/title_new_movies"
         android:icon="@drawable/ic_nowplaying" />
+
+    <item
+        android:id="@+id/movieListFragmentFavs"
+        android:title="@string/title_favs"
+        android:icon="@drawable/ic_favorite_on" />
+
     <item
         android:id="@+id/settingsFragment"
         android:title="@string/title_settings"

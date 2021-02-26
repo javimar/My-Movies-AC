@@ -34,6 +34,8 @@ class MoviesRepository(
         callApiForMovies(sortBy)
     }
 
+    suspend fun getFavMovies(): List<Movie> = localDataSource.getFavMovies()
+
     suspend fun findMovieById(id: Int): Movie = localDataSource.findMovieById(id)
 
     suspend fun updateMovie(movie: Movie) = localDataSource.updateMovie(movie)

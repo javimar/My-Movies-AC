@@ -14,6 +14,9 @@ abstract class MovieDao
     @Query("SELECT * FROM Movie WHERE isPopular = 0 ORDER BY popularity")
     abstract fun getAllYearMovies(): List<Movie>
 
+    @Query("SELECT * FROM Movie WHERE favorite = 1 ORDER BY popularity")
+    abstract fun getFavMovies(): List<Movie>
+
     @Query("SELECT * FROM Movie WHERE id = :id")
     abstract fun findMovieById(id: Int): Movie
 

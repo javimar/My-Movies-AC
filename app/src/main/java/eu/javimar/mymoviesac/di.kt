@@ -21,10 +21,7 @@ import eu.javimar.mymoviesac.ui.detail.MovieDetailFragment
 import eu.javimar.mymoviesac.ui.detail.MovieDetailViewModel
 import eu.javimar.mymoviesac.ui.main.MovieListFragment
 import eu.javimar.mymoviesac.ui.main.MovieListingViewModel
-import eu.javimar.usecases.FindMovieById
-import eu.javimar.usecases.GetMovies
-import eu.javimar.usecases.ReloadMoviesFromServer
-import eu.javimar.usecases.ToggleMovieFavorite
+import eu.javimar.usecases.*
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -74,8 +71,9 @@ private val scopesModule = module {
         viewModel { (
                         sortBy: String,
                         isPopular: Boolean) ->
-            MovieListingViewModel(sortBy, isPopular, get()) }
+            MovieListingViewModel(sortBy, isPopular, get(), get()) }
         scoped { GetMovies(get()) }
+        scoped { GetFavMovies(get()) }
     }
 
     scope(named<MovieDetailFragment>()) {

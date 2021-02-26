@@ -120,6 +120,9 @@ class MovieListFragment: ScopeFragment()
                     isPopular = false
                     viewModel.showMovies(isPopular)
                 }
+                R.id.movieListFragmentFavs -> {
+                    viewModel.showFavMovies()
+                }
             }
         }
     }

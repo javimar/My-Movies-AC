@@ -28,6 +28,10 @@ class RoomDataSource(db: MovieDatabase) : LocalDataSource
         movieDao.getAllYearMovies().map { it.toDomainMovie() }
     }
 
+    override suspend fun getFavMovies(): List<Movie> = withContext(Dispatchers.IO) {
+        movieDao.getFavMovies().map { it.toDomainMovie() }
+    }
+
     override suspend fun findMovieById(id: Int): Movie = withContext(Dispatchers.IO) {
         movieDao.findMovieById(id).toDomainMovie()
     }

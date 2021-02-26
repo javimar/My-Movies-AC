@@ -71,9 +71,10 @@ private val scopesModule = module {
         viewModel { (
                         sortBy: String,
                         isPopular: Boolean) ->
-            MovieListingViewModel(sortBy, isPopular, get(), get()) }
+            MovieListingViewModel(sortBy, isPopular, get(), get(), get()) }
         scoped { GetMovies(get()) }
         scoped { GetFavMovies(get()) }
+        scoped { ReloadMoviesFromServer(get()) }
     }
 
     scope(named<MovieDetailFragment>()) {

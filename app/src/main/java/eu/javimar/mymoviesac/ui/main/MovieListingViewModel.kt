@@ -4,12 +4,14 @@ import androidx.lifecycle.*
 import eu.javimar.domain.Movie
 import eu.javimar.usecases.GetFavMovies
 import eu.javimar.usecases.GetMovies
+import eu.javimar.usecases.ReloadMoviesFromServer
 import kotlinx.coroutines.launch
 
 class MovieListingViewModel(private var sortBy: String,
                             private var isPopular: Boolean,
                             private val refreshMovies: GetMovies,
-                            private val getFavMovies: GetFavMovies) : ViewModel()
+                            private val getFavMovies: GetFavMovies,
+                            private val reloadMovies: ReloadMoviesFromServer) : ViewModel()
 {
     private val _status = MutableLiveData<UIModel>()
     val status: LiveData<UIModel>
@@ -47,6 +49,22 @@ class MovieListingViewModel(private var sortBy: String,
         }
     }
 
+    fun reloadMoviesFromServer()
+    {
+        viewModelScope.launch {
+            _status.value = UIModel.Loading
+            try
+            {
+                reloadMovies.invoke(sortBy)
+                _status.value = UIModel.Loaded(refreshMovies
+                    .invoke(sortBy, isPopular))
+            }
+            catch (e: Exception)
+            {
+                _status.value = UIModel.Error
+            }
+        }
+    }
 
     fun onCoarsePermissionRequested()
     {

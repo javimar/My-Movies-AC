@@ -1,9 +1,7 @@
 package eu.javimar.mymoviesac.ui.main
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.widget.Toast
@@ -40,6 +38,8 @@ class MovieListFragment: ScopeFragment()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View
     {
+        setHasOptionsMenu(true)
+
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_movie_listing, container,false)
 
@@ -92,6 +92,25 @@ class MovieListFragment: ScopeFragment()
                     requireActivity().showError(R.string.err_nointernet, Toast.LENGTH_SHORT)
                 }
             }
+        }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
+    {
+        inflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        return when (item.itemId)
+        {
+            R.id.action_refresh ->
+            {
+                viewModel.reloadMoviesFromServer()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
